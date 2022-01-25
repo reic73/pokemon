@@ -3,7 +3,9 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 
-const Home: NextPage = () => {
+import {connect} from 'react-redux'
+
+const Home = (currentUser:any) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -69,4 +71,8 @@ const Home: NextPage = () => {
   )
 }
 
-export default Home
+const mapStateToProps = (state:any)=>({
+  currentUser: state.user.currentUser
+})
+
+export default connect(mapStateToProps)(Home)
