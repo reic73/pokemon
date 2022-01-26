@@ -3,6 +3,7 @@ import React from "react";
 import { retrievePokemonLists } from "Redux/reducers/pokemon/action";
 import Image from "next/image";
 import ViewSwitch from "Components/templates/viewswitch";
+import { pokemonNumberHelper } from "Helpers/common-helper";
 
 const MobilePokemonList = (props: any) => {
   return (
@@ -12,7 +13,9 @@ const MobilePokemonList = (props: any) => {
         mobile={
           <div
             className={`flex my-2 p-2 rounded-xl justify-between ${
-              props.index % 2 == 0 ? "bg-blue-50" : " border-2 border-blue-100"
+              props.data.id % 2 == 0
+                ? "bg-blue-50"
+                : " border-2 border-blue-100"
             }`}
           >
             <div className="flex">
@@ -25,7 +28,12 @@ const MobilePokemonList = (props: any) => {
               />
 
               <div className="flex items-center ml-3 font-bold text-sm">
-                {props.data.name.toUpperCase()}
+                <div>
+                  {props.data.name.toUpperCase()}
+                  <div className="text-xs font-normal">
+                    {pokemonNumberHelper(props.data.id)}
+                  </div>
+                </div>
               </div>
             </div>
             <div className="flex items-center">

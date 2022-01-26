@@ -5,12 +5,15 @@ export default class Request {
     try {
       const limit = 20;
       const url = `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${
-        limit * page
+        limit * (page - 1)
       }`;
 
       const response = await Axios.get(url);
 
       const responseData = response.data;
+      const maxData = responseData.count;
+      const maxPage = Math.ceil(maxData / limit);
+
       const pokemonData = responseData.results;
       const promises = pokemonData.map(async (data: any) => {
         const pokemonDetails = await Axios.get(data.url);
@@ -19,7 +22,10 @@ export default class Request {
       });
       await Promise.all(promises);
 
-      const toReturn = pokemonData;
+      const toReturn = {
+        data: pokemonData,
+        maxPage,
+      };
       return toReturn;
     } catch (e) {
       alert("Terjadi kesalahan mengambil data list Pokemon");
