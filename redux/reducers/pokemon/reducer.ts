@@ -1,5 +1,5 @@
 const INITIAL_STATE = {
-  pokemonLists:null
+  pokemonLists:[]
 }
 const pokemonReducer = (state=INITIAL_STATE, action:any)=>{
   switch(action.type){
