@@ -7,7 +7,6 @@ import Layout from "Components/templates/layout";
 import ViewSwitch from "Components/templates/viewswitch";
 import MobilePokemonDetail from "Components/organisms/mobile-pokemon-detail";
 import DesktopPokemonDetail from "Components/organisms/desktop-pokemon-detail";
-import Pagination from "Components/templates/pagination";
 import { useRouter } from "next/router";
 
 const PokemonList = (props: any) => {
