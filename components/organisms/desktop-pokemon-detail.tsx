@@ -5,9 +5,6 @@ import typeColors from "Constants/pokemon-types-color";
 import ButtonContained from "Components/atoms/button-contained";
 
 const DesktopPokemonDetail = (props: any) => {
-  const imageComponent = (data: any) => {
-    return <div>test</div>;
-  };
   return (
     <div className="mt-10 mx-40">
       <div className="flex">
@@ -97,7 +94,10 @@ const DesktopPokemonDetail = (props: any) => {
       </div>
 
       <div className="flex w-full my-8 bg-white">
-        <ButtonContained>{`Catch 'Em`}</ButtonContained>
+        <ButtonContained
+          onClick={() => props.onClick(props.data.id)}
+          disabled={props.disabled}
+        >{`Catch 'Em`}</ButtonContained>
       </div>
     </div>
   );

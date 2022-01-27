@@ -4,14 +4,16 @@ interface IButtonContained {
   onClick?: () => void;
   children: any;
   disabled?: boolean;
-  type?: "primary" | "secondary";
-  isFullwidth?: boolean;
-  size?: "big" | "small";
 }
 
 const ButtonContained = (props: IButtonContained) => {
   return (
-    <div className="bg-red-500 hover:bg-red-700 w-full rounded p-2 cursor-pointer flex justify-center font-semibold text-white">
+    <div
+      className={` w-full rounded p-2 cursor-pointer flex justify-center font-semibold text-white ${
+        props.disabled ? "bg-gray-400" : "bg-red-500 hover:bg-red-700"
+      }`}
+      onClick={props.disabled ? () => {} : props.onClick}
+    >
       {props.children}
     </div>
   );
