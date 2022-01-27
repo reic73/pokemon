@@ -4,7 +4,10 @@ import { pokemonNumberHelper } from "Helpers/common-helper";
 
 const DesktopPokemonList = (props: any) => {
   return (
-    <div className="rounded-xl bg-gray-100 overflow-hidden hover:bg-gray-200">
+    <div
+      className="rounded-xl bg-gray-100 overflow-hidden hover:bg-gray-200"
+      onClick={() => props.onSelect(props.data.id)}
+    >
       <div className="flex justify-center">
         <Image
           src={props.data.image}

@@ -36,9 +36,9 @@ export default class Request {
     }
   }
 
-  public static async retrievePokemonDetails(id: number) {
+  public static async retrievePokemonDetails(id: string | string[]) {
     try {
-      const url = `https://pokeapi.co/api/v2/pokemon/2`;
+      const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
 
       const response = await Axios.get(url);
 
@@ -65,6 +65,7 @@ export default class Request {
       const weight = responseData.weight;
       const name = responseData.forms[0].name;
       const image = responseData.sprites.front_default;
+      const pokemonId = responseData.id;
 
       const toReturn = {
         ability: abilityName,
@@ -74,6 +75,7 @@ export default class Request {
         weight,
         name,
         image,
+        id: pokemonId,
       };
 
       return toReturn;

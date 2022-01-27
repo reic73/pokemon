@@ -3,6 +3,16 @@ const INITIAL_STATE = {
     data: [],
     maxPage: 0,
   },
+  pokemonDetails: {
+    ability: "",
+    moves: [],
+    type: [],
+    height: 0,
+    weight: 0,
+    name: "",
+    image: "",
+    id: 0,
+  },
 };
 const pokemonReducer = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
@@ -10,6 +20,11 @@ const pokemonReducer = (state = INITIAL_STATE, action: any) => {
       return {
         ...state,
         pokemonLists: action.payload,
+      };
+    case "RETRIEVE_POKEMON_DETAILS":
+      return {
+        ...state,
+        pokemonDetail: action.payload,
       };
     default:
       return state;

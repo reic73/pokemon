@@ -8,6 +8,7 @@ const MobilePokemonList = (props: any) => {
       className={`flex my-2 p-2 rounded-xl justify-between ${
         props.data.id % 2 == 0 ? "bg-gray-100" : " border-2 border-gray-100"
       }`}
+      onClick={() => props.onSelect(props.data.id)}
     >
       <div className="flex">
         <Image
