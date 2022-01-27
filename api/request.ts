@@ -43,8 +43,9 @@ export default class Request {
       const response = await Axios.get(url);
 
       const responseData = response.data;
+
       const abilities = responseData.abilities[0];
-      const abilityName = capitalizeEachWord(abilities.ability.name);
+      const abilityName = slugToCapitalizeEachWord(abilities.ability.name);
 
       const moves = responseData.moves.slice(0, 3);
       const moveLists: string[] = [];
@@ -63,7 +64,7 @@ export default class Request {
 
       const height = responseData.height;
       const weight = responseData.weight;
-      const name = responseData.forms[0].name;
+      const name = capitalizeEachWord(responseData.forms[0].name);
       const image = responseData.sprites.front_default;
       const pokemonId = responseData.id;
 

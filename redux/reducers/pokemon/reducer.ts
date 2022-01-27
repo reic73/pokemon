@@ -24,7 +24,7 @@ const pokemonReducer = (state = INITIAL_STATE, action: any) => {
     case "RETRIEVE_POKEMON_DETAILS":
       return {
         ...state,
-        pokemonDetail: action.payload,
+        pokemonDetails: action.payload,
       };
     default:
       return state;

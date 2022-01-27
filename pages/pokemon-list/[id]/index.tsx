@@ -5,20 +5,21 @@ import Request from "Api/request";
 import { retrievePokemonDetails } from "Redux/reducers/pokemon/action";
 import Layout from "Components/templates/layout";
 import ViewSwitch from "Components/templates/viewswitch";
-import MobilePokemonList from "Components/organisms/mobile-pokemon-list";
-import DesktopPokemonList from "Components/organisms/desktop-pokemon-list";
+import MobilePokemonDetail from "Components/organisms/mobile-pokemon-detail";
+import DesktopPokemonDetail from "Components/organisms/desktop-pokemon-detail";
 import Pagination from "Components/templates/pagination";
 import { useRouter } from "next/router";
 
 const PokemonList = (props: any) => {
   const router = useRouter();
+  const pokemonData = props.pokemonDetails;
   const [pokemonId, setPokemonId] = useState("0");
   const asyncRequest = async (
     requestFunction: Promise<any>,
     setState: (data: any) => void
   ) => {
     const response = await requestFunction;
-    console.log("response", response);
+
     if (response != undefined) {
       setState(response);
       setPokemonId(response.id);
@@ -36,9 +37,13 @@ const PokemonList = (props: any) => {
   }, [router, props.retrievePokemonDetails]);
 
   return (
-    <Layout title="Pokemon List">
-      {console.log("details props", props.pokemonDetails)}
-      {console.log("pokemonid", pokemonId)}test2
+    <Layout title={`Pokemon | ${pokemonData.name ? pokemonData.name : ""}`}>
+      {pokemonId != "0" ? (
+        <ViewSwitch
+          desktop={<DesktopPokemonDetail data={pokemonData} />}
+          mobile={<MobilePokemonDetail data={pokemonData} />}
+        />
+      ) : null}
     </Layout>
   );
 };

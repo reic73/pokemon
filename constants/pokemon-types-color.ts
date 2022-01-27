@@ -1,4 +1,7 @@
-const typeColors = {
+interface ITypeColor {
+  [index: string]: string;
+}
+const typeColors: ITypeColor = {
   bug: "#729f3f",
   dragon: "#53a4cf",
   fairy: "#fdb9e9",
