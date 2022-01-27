@@ -4,9 +4,9 @@ import React, { useEffect, useState, useRef } from "react";
 import Request from "Api/request";
 import { retrievePokemonLists } from "Redux/reducers/pokemon/action";
 import Layout from "Components/templates/layout";
-import Image from "next/image";
 import ViewSwitch from "Components/templates/viewswitch";
 import MobilePokemonList from "Components/organisms/mobile-pokemon-list";
+import DesktopPokemonList from "Components/organisms/desktop-pokemon-list";
 import Pagination from "Components/templates/pagination";
 
 const PokemonList = (props: any) => {
@@ -35,11 +35,11 @@ const PokemonList = (props: any) => {
 
   return (
     <Layout title="Pokemon List">
-      <div ref={prize}>
+      <div ref={prize} className="md:flex md:flex-wrap">
         {pokemonList.data.map((data: any, index: number) => (
-          <div key={index}>
+          <div key={index} className="md:w-1/5 md:h-64 md:p-2 md:my-5 my-3">
             <ViewSwitch
-              desktop={<div>desktop</div>}
+              desktop={<DesktopPokemonList data={data} key={index} />}
               mobile={<MobilePokemonList data={data} key={index} />}
             />
           </div>

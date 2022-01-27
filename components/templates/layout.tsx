@@ -16,7 +16,7 @@ const Layout = (props: ILayout) => {
       </Head>
       <NavigationHeader />
       <ViewSwitch
-        desktop={<div className="pt-20">{props.children}</div>}
+        desktop={<div className="pt-20 px-20">{props.children}</div>}
         mobile={<div className="pt-28 px-8">{props.children}</div>}
       />
     </div>
