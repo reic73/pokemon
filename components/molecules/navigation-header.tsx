@@ -34,7 +34,7 @@ const NavigationHeader = () => {
           <ViewSwitch
             desktop={
               <TextButton onClick={() => router.push("/my-pokemon")}>
-                My Pokedex
+                My Pokemon
               </TextButton>
             }
             mobile={

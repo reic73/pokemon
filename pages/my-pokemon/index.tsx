@@ -91,7 +91,7 @@ const MyPokemon = (props: any) => {
         className="flex justify-center text-2xl font-bold py-2 text-red-500"
         ref={refElement}
       >
-        My Pokedex
+        My Pokemon
       </div>
 
       <div className="md:flex md:flex-wrap">
@@ -115,7 +115,7 @@ const MyPokemon = (props: any) => {
                     key={index}
                     onSelect={handleSelect}
                     id={index}
-                    isMyPokedexPage={true}
+                    isMyPokemonPage={true}
                     onRelease={handleRelease}
                   />
                 }

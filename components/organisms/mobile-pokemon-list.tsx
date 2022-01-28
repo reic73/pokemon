@@ -33,7 +33,7 @@ const MobilePokemonList = (props: any) => {
       </div>
 
       <div className="flex items-center pr-2">
-        {props.isMyPokedexPage ? (
+        {props.isMyPokemonPage ? (
           <div
             className="text-red-500 border border-red-500 px-2 font-semibold rounded hover:bg-red-500 hover:text-white"
             onClick={(event) => {

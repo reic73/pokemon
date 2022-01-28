@@ -44,7 +44,7 @@ const PokemonList = (props: any) => {
         className="flex justify-center text-2xl font-bold py-2 text-red-500"
         ref={refElement}
       >
-        Pokedex
+        Pokemon Lists
       </div>
       {console.log("pokemon list", pokemonList)}
       <div className="md:flex md:flex-wrap">
