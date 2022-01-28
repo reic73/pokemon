@@ -13,7 +13,7 @@ const MobilePokemonList = (props: any) => {
       }`}
       onClick={() => props.onSelect(props.data.id)}
     >
-      <div className="flex">
+      <div className="flex border">
         <Image
           src={props.data.image}
           alt="pokemon-list"
@@ -32,10 +32,10 @@ const MobilePokemonList = (props: any) => {
         </div>
       </div>
 
-      <div className="flex items-center pr-2">
+      <div className="flex items-center pr-2 border">
         {props.isMyPokemonPage ? (
           <div
-            className="text-red-500 border border-red-500 px-2 font-semibold rounded hover:bg-red-500 hover:text-white"
+            className="text-red-500 border border-red-500 px-2 text-sm font-semibold rounded hover:bg-red-500 hover:text-white"
             onClick={(event) => {
               event.stopPropagation();
               props.onRelease({
@@ -51,9 +51,9 @@ const MobilePokemonList = (props: any) => {
             Release
           </div>
         ) : (
-          <div>
+          <div className="border flex">
             <div className="p-1 rounded bg-red-500 text-white flex justify-center text-xs">
-              0
+              {props.data.owned}
             </div>
             <div className="p-1 text-xs text-gray-500">owned</div>
           </div>

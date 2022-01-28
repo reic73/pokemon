@@ -8,8 +8,10 @@ import MobilePokemonList from "Components/organisms/mobile-pokemon-list";
 import DesktopPokemonList from "Components/organisms/desktop-pokemon-list";
 import Pagination from "Components/templates/pagination";
 import { useRouter } from "next/router";
+import { isJson } from "Helpers/common-helper";
 
 const PokemonList = (props: any) => {
+  const localStorageKey = "myPokemon";
   const router = useRouter();
   const pokemonList = props.pokemonLists;
   const [page, setPage] = useState(1);

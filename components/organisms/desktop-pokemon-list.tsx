@@ -28,12 +28,31 @@ const DesktopPokemonList = (props: any) => {
         </div>
 
         <div className="flex items-center">
-          <div>
-            <div className="text-xs">Owned</div>
-            <div className="p-1 rounded bg-red-500 text-white flex justify-center">
-              10
+          {props.isMyPokemonPage ? (
+            <div
+              className="text-red-500 border border-red-500 px-2 font-semibold rounded hover:bg-red-500 hover:text-white"
+              onClick={(event) => {
+                event.stopPropagation();
+                props.onRelease({
+                  id: props.data.id,
+                  name: props.data.name,
+                  uniqueKey: props.data.uniqueKey,
+                });
+              }}
+              style={{
+                zIndex: 10,
+              }}
+            >
+              Release
             </div>
-          </div>
+          ) : (
+            <div>
+              <div className="text-xs">Owned</div>
+              <div className="p-1 rounded bg-red-500 text-white flex justify-center">
+                {props.data.owned}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

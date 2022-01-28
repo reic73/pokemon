@@ -3,15 +3,21 @@ import {
   slugToCapitalizeEachWord,
   capitalizeEachWord,
 } from "Helpers/common-helper";
+import { isJson } from "Helpers/common-helper";
 
 export default class Request {
   public static async retrievePokemonLists(page: number) {
     try {
-      const limit = 20;
+      const limit = 2;
       const url = `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${
         limit * (page - 1)
       }`;
-
+      let sessionObject: { [index: string]: any } = {};
+      const getsession = sessionStorage.getItem("myPokemon");
+      if (getsession && isJson(getsession)) {
+        sessionObject = JSON.parse(getsession);
+      }
+      console.log("session ", sessionObject);
       const response = await Axios.get(url);
 
       const responseData = response.data;
@@ -20,9 +26,18 @@ export default class Request {
 
       const pokemonData = responseData.results;
       const promises = pokemonData.map(async (data: any) => {
+        let namesLength = 0;
         const pokemonDetails = await Axios.get(data.url);
+        const id = pokemonDetails.data.id;
+        const isExist = sessionObject[`${id}`] != undefined;
+        if (isExist) {
+          const temp = sessionObject[`${id}`];
+          namesLength = temp.names.length;
+          console.log("id", id, "temp", temp);
+        }
         data["id"] = pokemonDetails.data.id;
         data["image"] = pokemonDetails.data.sprites.front_default;
+        data["owned"] = namesLength;
       });
       await Promise.all(promises);
 
