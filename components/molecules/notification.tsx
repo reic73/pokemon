@@ -24,7 +24,7 @@ const SnackBar = (props: ISnackBar) => {
     >
       <Snackbar
         open={props.isOpen}
-        autoHideDuration={6000}
+        autoHideDuration={3000}
         onClose={props.onClose}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >

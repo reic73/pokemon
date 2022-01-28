@@ -38,7 +38,11 @@ const MobilePokemonList = (props: any) => {
             className="text-red-500 border border-red-500 px-2 font-semibold rounded hover:bg-red-500 hover:text-white"
             onClick={(event) => {
               event.stopPropagation();
-              props.onRelease({ id: props.data.id, name: props.data.name });
+              props.onRelease({
+                id: props.data.id,
+                name: props.data.name,
+                uniqueKey: props.data.uniqueKey,
+              });
             }}
             style={{
               zIndex: 10,

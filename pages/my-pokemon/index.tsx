@@ -51,23 +51,20 @@ const MyPokemon = (props: any) => {
 
   const handleRelease = (data: any) => {
     const prevUserState = props.user;
-    console.log("handle release", data);
     const releaseId = data.id;
     const releaseName = data.name;
 
     const prevPokemonNames = prevUserState[`${releaseId}`]["names"];
-    const releaseIndex = prevPokemonNames.indexOf(releaseName);
 
     const updatedPokemonNames = prevPokemonNames.filter(
       (value: string) => value != releaseName
     );
     prevUserState[`${releaseId}`]["names"] = updatedPokemonNames;
-    console.log("release index", releaseIndex);
 
     const toBeStored = JSON.stringify(prevUserState);
-    console.log("toBe stored", toBeStored);
-
     setOpenSnackBar(true);
+    pokemonData.data.splice(data.uniqueKey, 1);
+
     sessionStorage.setItem(localStorageKey, toBeStored);
   };
 
@@ -78,7 +75,6 @@ const MyPokemon = (props: any) => {
       props.setUser(sessionObject);
       const data = getPokemonDataFromStorage(sessionObject);
       setPokemonData(data);
-      console.log("data", data);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.setUser]);
@@ -98,34 +94,56 @@ const MyPokemon = (props: any) => {
         My Pokedex
       </div>
 
-      {console.log("setUser", props.user)}
       <div className="md:flex md:flex-wrap">
-        {pokemonData.data.map((data: any, index: number) => (
-          <div
-            key={index}
-            className="lg:w-1/5 md:w-1/3 md:p-1 lg:my-5 lg:p-2 my-3"
-          >
+        {pokemonData.data.length ? (
+          pokemonData.data.map((data: any, index: number) => (
+            <div
+              key={index}
+              className="lg:w-1/5 md:w-1/3 md:p-1 lg:my-5 lg:p-2 my-3"
+            >
+              <ViewSwitch
+                desktop={
+                  <DesktopPokemonList
+                    data={data}
+                    key={index}
+                    onSelect={handleSelect}
+                  />
+                }
+                mobile={
+                  <MobilePokemonList
+                    data={data}
+                    key={index}
+                    onSelect={handleSelect}
+                    id={index}
+                    isMyPokedexPage={true}
+                    onRelease={handleRelease}
+                  />
+                }
+              />
+            </div>
+          ))
+        ) : (
+          <div className="border w-full rounded my-4">
             <ViewSwitch
               desktop={
-                <DesktopPokemonList
-                  data={data}
-                  key={index}
-                  onSelect={handleSelect}
-                />
+                <div className="flex justify-center items-center h-36">
+                  <div className="grid place-items-center">
+                    <div>You have no Pokemon yet!</div>
+                    <div className="text-red-500 font-semibold text-lg">{`Go catch 'em!`}</div>
+                  </div>
+                </div>
               }
               mobile={
-                <MobilePokemonList
-                  data={data}
-                  key={index}
-                  onSelect={handleSelect}
-                  id={index}
-                  isMyPokedexPage={true}
-                  onRelease={handleRelease}
-                />
+                <div className="flex justify-center items-center h-20">
+                  <div className="grid place-items-center">
+                    <div className="text-sm">You have no Pokemon yet!</div>
+                    <div className="text-red-500 font-semibold">{`Go catch 'em!`}</div>
+                  </div>
+                </div>
               }
             />
           </div>
-        ))}
+        )}
       </div>
 
       <Pagination page={page} setPage={setPage} maxPage={pokemonData.maxPage} />

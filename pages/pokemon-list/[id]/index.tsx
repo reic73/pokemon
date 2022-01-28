@@ -50,6 +50,10 @@ const PokemonList = (props: any) => {
   const handleKeep = () => {
     const prevUserState = props.user;
     const isNewPokemon = prevUserState[`${pokemonData.id}`] == undefined;
+    if (name == "") {
+      alert("Name cannot be empty");
+      return;
+    }
 
     if (isNewPokemon) {
       prevUserState[`${pokemonData.id}`] = {

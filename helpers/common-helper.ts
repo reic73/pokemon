@@ -47,6 +47,7 @@ export const isJson = (str: string) => {
 
 export const getPokemonDataFromStorage = (data: any) => {
   const limitPerPage = 20;
+  const uniqueKey = -1;
   console.log("data", data);
   const ids = Object.keys(data);
   const pokemonList: any[] = [];
@@ -60,6 +61,7 @@ export const getPokemonDataFromStorage = (data: any) => {
         pokemonName: pokemonData.data.name,
         id: pokemonData.data.id,
         image: pokemonData.data.image,
+        uniqueKey: uniqueKey + 1,
       };
       pokemonList.push(data);
     });
