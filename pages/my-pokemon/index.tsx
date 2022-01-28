@@ -73,11 +73,11 @@ const MyPokemon = (props: any) => {
     if (getsession && isJson(getsession)) {
       const sessionObject = JSON.parse(getsession);
       props.setUser(sessionObject);
-      const data = getPokemonDataFromStorage(sessionObject);
+      const data = getPokemonDataFromStorage(sessionObject, page);
       setPokemonData(data);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.setUser]);
+  }, [props.setUser, page]);
 
   return (
     <Layout title="My Pokemon">
