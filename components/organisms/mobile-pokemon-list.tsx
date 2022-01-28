@@ -5,8 +5,10 @@ import { pokemonNumberHelper } from "Helpers/common-helper";
 const MobilePokemonList = (props: any) => {
   return (
     <div
-      className={`flex my-2 p-2 rounded-xl justify-between ${
-        props.data.id % 2 == 0 ? "bg-gray-100" : " border-2 border-gray-100"
+      className={`flex my-2 p-2 rounded-xl cursor-pointer justify-between ${
+        props.data.id % 2 == 0
+          ? "bg-gray-100 hover:bg-gray-300"
+          : " border-2 border-gray-100 hover:bg-gray-200"
       }`}
       onClick={() => props.onSelect(props.data.id)}
     >

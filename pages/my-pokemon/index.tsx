@@ -9,7 +9,7 @@ import DesktopPokemonList from "Components/organisms/desktop-pokemon-list";
 import Pagination from "Components/templates/pagination";
 import { useRouter } from "next/router";
 
-const PokemonList = (props: any) => {
+const MyPokemon = (props: any) => {
   const router = useRouter();
   const pokemonList = props.pokemonLists;
   const [page, setPage] = useState(1);
@@ -39,12 +39,12 @@ const PokemonList = (props: any) => {
   };
 
   return (
-    <Layout title="Pokemon List">
+    <Layout title="My Pokemon">
       <div
         className="flex justify-center text-2xl font-bold py-2 text-red-500"
         ref={refElement}
       >
-        Pokedex
+        My Pokedex
       </div>
 
       <div className="md:flex md:flex-wrap">
@@ -86,4 +86,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   retrievePokemonLists: (data: any) => dispatch(retrievePokemonLists(data)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(PokemonList);
+export default connect(mapStateToProps, mapDispatchToProps)(MyPokemon);

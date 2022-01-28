@@ -97,7 +97,6 @@ const PokemonList = (props: any) => {
 
   return (
     <Layout title={`Pokemon | ${pokemonData.name ? pokemonData.name : ""}`}>
-      {console.log("setUser", props.user)}
       <SnackBar
         onClose={() => {
           setOpenSnackBar(false);

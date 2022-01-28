@@ -1,40 +1,31 @@
 import React from "react";
-interface ITextButton {
+import { styled } from "@mui/material/styles";
+import Button from "@mui/material/Button";
+import ColorConstant from "Constants/colors";
+
+interface IButtonContained {
   onClick?: () => void;
   children: any;
   disabled?: boolean;
-  type?: "primary" | "secondary";
-  customClassName?: string;
+  fullWidth?: boolean;
 }
 
-export const TextButton = (props: ITextButton) => {
-  let baseColor;
-  switch (props.type) {
-    case "primary":
-      baseColor = "text-cyanBlue";
-      break;
-    case "secondary":
-      baseColor = "text-nero";
-      break;
-    default:
-      break;
-  }
-  const desktopStyle = props.disabled
-    ? `text-sm font-bold ${baseColor} flex items-center justify-center`
-    : `text-sm font-bold ${baseColor} cursor-pointer flex items-center justify-center`;
+const TextButton = (props: IButtonContained) => {
+  const CustomTextButton = styled(Button)(({ theme }) => ({
+    color: theme.palette.getContrastText(ColorConstant.valencia),
+  }));
 
   return (
-    <div
-      style={{ whiteSpace: "nowrap" }}
-      className={`${desktopStyle} ${props.customClassName}`}
-      onClick={props.disabled ? () => {} : props.onClick}
-    >
-      {props.children}
+    <div className="w-full mx-2">
+      <CustomTextButton
+        onClick={props.onClick}
+        fullWidth={props.fullWidth}
+        disabled={props.disabled}
+      >
+        <span className="font-semibold text-lg">{props.children}</span>
+      </CustomTextButton>
     </div>
   );
 };
 
-TextButton.defaultProps = {
-  type: "primary",
-  customClassName: "",
-};
+export default TextButton;
