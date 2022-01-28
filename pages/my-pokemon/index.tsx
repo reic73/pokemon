@@ -9,7 +9,11 @@ import MobilePokemonList from "Components/organisms/mobile-pokemon-list";
 import DesktopPokemonList from "Components/organisms/desktop-pokemon-list";
 import Pagination from "Components/templates/pagination";
 import { useRouter } from "next/router";
-import { isJson, getPokemonDataFromStorage } from "Helpers/common-helper";
+import {
+  isJson,
+  getPokemonDataFromStorage,
+  getSessionStorageData,
+} from "Helpers/common-helper";
 import SnackBar from "Components/molecules/notification";
 
 const MyPokemon = (props: any) => {
@@ -53,7 +57,9 @@ const MyPokemon = (props: any) => {
     const prevUserState = props.user;
     const releaseId = data.id;
     const releaseName = data.name;
-
+    const sessionData = getSessionStorageData();
+    console.log("prevUser", prevUserState);
+    console.log("session1", sessionData);
     const prevPokemonNames = prevUserState[`${releaseId}`]["names"];
 
     const updatedPokemonNames = prevPokemonNames.filter(
@@ -62,13 +68,13 @@ const MyPokemon = (props: any) => {
     prevUserState[`${releaseId}`]["names"] = updatedPokemonNames;
 
     const toBeStored = JSON.stringify(prevUserState);
-    setOpenSnackBar(true);
-    console.log("pokemon data test", pokemonData);
-    console.log("unique key", data.uniqueKey);
-    pokemonData.data.splice(data.uniqueKey - 1, 1);
-    console.log("pokemon data test2", pokemonData);
-
     sessionStorage.setItem(localStorageKey, toBeStored);
+    const session2 = getSessionStorageData();
+
+    const data1 = getPokemonDataFromStorage(session2, page);
+    setPokemonData(data1);
+    setOpenSnackBar(true);
+    console.log("session2", session2);
   };
 
   useEffect(() => {
@@ -97,7 +103,6 @@ const MyPokemon = (props: any) => {
       >
         My Pokemon
       </div>
-      {console.log("pokemon data fr", pokemonData)}
       <div className="md:flex md:flex-wrap">
         {pokemonData.data.length ? (
           pokemonData.data.map((data: any, index: number) => (
@@ -111,6 +116,8 @@ const MyPokemon = (props: any) => {
                     data={data}
                     key={index}
                     onSelect={handleSelect}
+                    isMyPokemonPage={true}
+                    onRelease={handleRelease}
                   />
                 }
                 mobile={

@@ -102,7 +102,7 @@ export const getPokemonTypes = (data: any): string[] => {
 export const getPokemonDataFromStorage = (data: any, page: number) => {
   const limitPerPage = 20;
   const offset = (page - 1) * 20;
-  let uniqueKey = 0;
+  let iteration = 0;
   const ids = Object.keys(data);
   const pokemonList: any[] = [];
 
@@ -110,19 +110,18 @@ export const getPokemonDataFromStorage = (data: any, page: number) => {
     const pokemonData = data[`${id}`];
     const pokemonNames = pokemonData["names"];
     pokemonNames.map((name: string) => {
-      uniqueKey++;
       const data = {
         name,
         pokemonName: pokemonData.data.name,
         id: pokemonData.data.id,
         image: pokemonData.data.image,
-        uniqueKey,
       };
       pokemonList.push(data);
+      iteration++;
     });
   });
 
-  const end = uniqueKey - offset < limitPerPage ? uniqueKey : limitPerPage;
+  const end = iteration - offset < limitPerPage ? iteration : limitPerPage;
   const toReturn = {
     data: pokemonList.slice(offset, end),
     maxPage: Math.ceil(pokemonList.length / limitPerPage),

@@ -11,7 +11,6 @@ interface IMobilePokemonList {
     name: string;
     owned: number;
     url: string;
-    uniqueKey: any;
   };
   isMyPokemonPage?: boolean;
   onRelease?: (data: any) => void;
@@ -20,7 +19,7 @@ interface IMobilePokemonList {
 const MobilePokemonList = (props: IMobilePokemonList) => {
   return (
     <div
-      className={`flex my-2 p-2 rounded-xl cursor-pointer justify-between hover:bg-gray-300 ${
+      className={`flex my-2 p-2 rounded-xl cursor-pointer justify-between ${
         props.id % 2 == 0 ? "bg-gray-100" : "border-2 border-gray-100 "
       }`}
       onClick={() => props.onSelect(props.data.id)}
@@ -47,14 +46,13 @@ const MobilePokemonList = (props: IMobilePokemonList) => {
       <div className="flex items-center pr-2">
         {props.isMyPokemonPage ? (
           <div
-            className="text-red-500 border border-red-500 px-2 text-sm font-semibold rounded hover:bg-red-500 hover:text-white"
+            className="text-red-500 border border-red-500 px-2 text-sm font-semibold rounded"
             onClick={(event) => {
               event.stopPropagation();
               if (props.onRelease) {
                 props.onRelease({
                   id: props.data.id,
                   name: props.data.name,
-                  uniqueKey: props.data.uniqueKey,
                 });
               }
             }}

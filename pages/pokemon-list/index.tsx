@@ -1,5 +1,5 @@
-import { connect } from "react-redux";
 import React, { useEffect, useState, useRef } from "react";
+import { connect } from "react-redux";
 import Request from "Api/request";
 import { retrievePokemonLists } from "Redux/reducers/pokemon/action";
 import Layout from "Components/templates/layout";

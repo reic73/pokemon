@@ -1,17 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { connect } from "react-redux";
-import { setUser } from "Redux/reducers/user/action";
 import React, { useEffect, useState } from "react";
 import Request from "Api/request";
+import { connect } from "react-redux";
+import { setUser } from "Redux/reducers/user/action";
 import { retrievePokemonDetails } from "Redux/reducers/pokemon/action";
 import Layout from "Components/templates/layout";
 import ViewSwitch from "Components/templates/viewswitch";
 import MobilePokemonDetail from "Components/organisms/mobile-pokemon-detail";
 import DesktopPokemonDetail from "Components/organisms/desktop-pokemon-detail";
-import { useRouter } from "next/router";
-import { isJson } from "Helpers/common-helper";
 import DialogBox from "Components/molecules/dialog-box";
 import SnackBar from "Components/molecules/notification";
+import { isJson } from "Helpers/common-helper";
+import { useRouter } from "next/router";
 
 const PokemonList = (props: any) => {
   const localStorageKey = "myPokemon";

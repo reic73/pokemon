@@ -2,7 +2,20 @@ import React from "react";
 import Image from "next/image";
 import { pokemonNumberHelper } from "Helpers/common-helper";
 
-const DesktopPokemonList = (props: any) => {
+interface IDesktopPokemonList {
+  onSelect: (id: number) => void;
+  data: {
+    id: number;
+    image: string;
+    name: string;
+    owned: number;
+    url: string;
+  };
+  isMyPokemonPage?: boolean;
+  onRelease?: (data: any) => void;
+}
+
+const DesktopPokemonList = (props: IDesktopPokemonList) => {
   return (
     <div
       className="rounded-xl bg-gray-100 overflow-hidden hover:bg-gray-200 cursor-pointer"
@@ -33,11 +46,12 @@ const DesktopPokemonList = (props: any) => {
               className="text-red-500 border border-red-500 px-2 font-semibold rounded hover:bg-red-500 hover:text-white"
               onClick={(event) => {
                 event.stopPropagation();
-                props.onRelease({
-                  id: props.data.id,
-                  name: props.data.name,
-                  uniqueKey: props.data.uniqueKey,
-                });
+                if (props.onRelease) {
+                  props.onRelease({
+                    id: props.data.id,
+                    name: props.data.name,
+                  });
+                }
               }}
               style={{
                 zIndex: 10,
