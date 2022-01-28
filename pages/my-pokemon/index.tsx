@@ -63,12 +63,16 @@ const MyPokemon = (props: any) => {
 
     const toBeStored = JSON.stringify(prevUserState);
     setOpenSnackBar(true);
-    pokemonData.data.splice(data.uniqueKey, 1);
+    console.log("pokemon data test", pokemonData);
+    console.log("unique key", data.uniqueKey);
+    pokemonData.data.splice(data.uniqueKey - 1, 1);
+    console.log("pokemon data test2", pokemonData);
 
     sessionStorage.setItem(localStorageKey, toBeStored);
   };
 
   useEffect(() => {
+    console.log("test masuk");
     const getsession = sessionStorage.getItem(localStorageKey);
     if (getsession && isJson(getsession)) {
       const sessionObject = JSON.parse(getsession);
@@ -77,7 +81,7 @@ const MyPokemon = (props: any) => {
       setPokemonData(data);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.setUser, page]);
+  }, [page]);
 
   return (
     <Layout title="My Pokemon">
@@ -93,7 +97,7 @@ const MyPokemon = (props: any) => {
       >
         My Pokemon
       </div>
-
+      {console.log("pokemon data fr", pokemonData)}
       <div className="md:flex md:flex-wrap">
         {pokemonData.data.length ? (
           pokemonData.data.map((data: any, index: number) => (

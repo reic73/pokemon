@@ -1,3 +1,25 @@
+export interface IPokemonDetails {
+  ability: string;
+  moves: string[];
+  types: string[];
+  weight: number;
+  height: number;
+  name: string;
+  image: string;
+  id: number;
+}
+
+export interface IPokemonLists {
+  data: {
+    id: number;
+    image: string;
+    name: string;
+    owned: number;
+    url: string;
+  }[];
+  maxPage: number;
+}
+
 const INITIAL_STATE = {
   pokemonLists: {
     data: [],
@@ -6,14 +28,15 @@ const INITIAL_STATE = {
   pokemonDetails: {
     ability: "",
     moves: [],
-    type: [],
-    height: 0,
+    types: [],
     weight: 0,
+    height: 0,
     name: "",
     image: "",
     id: 0,
   },
 };
+
 const pokemonReducer = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
     case "RETRIEVE_POKEMON_LIST":

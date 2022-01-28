@@ -65,8 +65,8 @@ const MobilePokemonDetail = (props: any) => {
       <div className="mt-4">
         <div className="text-xl font-semibold my-2">Types</div>
         <div className="flex">
-          {props.data.type.length ? (
-            props.data.type.map((type: string, index: number) => (
+          {props.data.types.length ? (
+            props.data.types.map((type: string, index: number) => (
               <div
                 key={index}
                 className="ml-2 px-4 rounded-xl text-white text-sm"

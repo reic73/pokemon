@@ -1,19 +1,31 @@
 import React from "react";
 import Image from "next/image";
 import { pokemonNumberHelper } from "Helpers/common-helper";
-import ButtonOutlined from "Components/atoms/button-outlined";
 
-const MobilePokemonList = (props: any) => {
+interface IMobilePokemonList {
+  onSelect: (id: number) => void;
+  id: number;
+  data: {
+    id: number;
+    image: string;
+    name: string;
+    owned: number;
+    url: string;
+    uniqueKey: any;
+  };
+  isMyPokemonPage?: boolean;
+  onRelease?: (data: any) => void;
+}
+
+const MobilePokemonList = (props: IMobilePokemonList) => {
   return (
     <div
-      className={`flex my-2 p-2 rounded-xl cursor-pointer justify-between ${
-        props.id % 2 == 0
-          ? "bg-gray-100 hover:bg-gray-300"
-          : " border-2 border-gray-100 hover:bg-gray-200"
+      className={`flex my-2 p-2 rounded-xl cursor-pointer justify-between hover:bg-gray-300 ${
+        props.id % 2 == 0 ? "bg-gray-100" : "border-2 border-gray-100 "
       }`}
       onClick={() => props.onSelect(props.data.id)}
     >
-      <div className="flex border">
+      <div className="flex">
         <Image
           src={props.data.image}
           alt="pokemon-list"
@@ -32,17 +44,19 @@ const MobilePokemonList = (props: any) => {
         </div>
       </div>
 
-      <div className="flex items-center pr-2 border">
+      <div className="flex items-center pr-2">
         {props.isMyPokemonPage ? (
           <div
             className="text-red-500 border border-red-500 px-2 text-sm font-semibold rounded hover:bg-red-500 hover:text-white"
             onClick={(event) => {
               event.stopPropagation();
-              props.onRelease({
-                id: props.data.id,
-                name: props.data.name,
-                uniqueKey: props.data.uniqueKey,
-              });
+              if (props.onRelease) {
+                props.onRelease({
+                  id: props.data.id,
+                  name: props.data.name,
+                  uniqueKey: props.data.uniqueKey,
+                });
+              }
             }}
             style={{
               zIndex: 10,
@@ -51,7 +65,7 @@ const MobilePokemonList = (props: any) => {
             Release
           </div>
         ) : (
-          <div className="border flex">
+          <div className="flex">
             <div className="p-1 rounded bg-red-500 text-white flex justify-center text-xs">
               {props.data.owned}
             </div>

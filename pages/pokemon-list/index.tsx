@@ -8,18 +8,17 @@ import MobilePokemonList from "Components/organisms/mobile-pokemon-list";
 import DesktopPokemonList from "Components/organisms/desktop-pokemon-list";
 import Pagination from "Components/templates/pagination";
 import { useRouter } from "next/router";
-import { isJson } from "Helpers/common-helper";
 
 const PokemonList = (props: any) => {
-  const localStorageKey = "myPokemon";
   const router = useRouter();
   const pokemonList = props.pokemonLists;
   const [page, setPage] = useState(1);
   const refElement = useRef<null | HTMLDivElement>(null);
-  const asyncRequest = async (
-    requestFunction: Promise<any>,
-    setState: (data: any) => void
-  ) => {
+
+  const handleSelect = (id: number) => {
+    router.push(`/pokemon-list/${id}`);
+  };
+  const asyncRequest = async (requestFunction: Promise<any>, setState: any) => {
     const response = await requestFunction;
     setState(response);
   };
@@ -29,16 +28,13 @@ const PokemonList = (props: any) => {
       Request.retrievePokemonLists(page),
       props.retrievePokemonLists
     );
+
     refElement.current?.scrollIntoView({
       behavior: "smooth",
       block: "start",
       inline: "nearest",
     });
   }, [props.retrievePokemonLists, page]);
-
-  const handleSelect = (id: number) => {
-    router.push(`/pokemon-list/${id}`);
-  };
 
   return (
     <Layout title="Pokemon List">
@@ -48,7 +44,7 @@ const PokemonList = (props: any) => {
       >
         Pokemon Lists
       </div>
-      {console.log("pokemon list", pokemonList)}
+
       <div className="md:flex md:flex-wrap">
         {pokemonList.data.map((data: any, index: number) => (
           <div

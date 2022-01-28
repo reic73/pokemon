@@ -1,3 +1,7 @@
+export interface IUser {
+  [index: number]: any;
+}
+
 const INITIAL_STATE = {
   user: {},
 };
