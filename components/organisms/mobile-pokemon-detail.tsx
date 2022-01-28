@@ -86,8 +86,11 @@ const MobilePokemonDetail = (props: any) => {
       <div className="fixed bottom-0 right-0 flex w-full p-4 bg-white border">
         <ButtonContained
           disabled={props.disabled}
-          onClick={() => props.onClick(props.data.id)}
-        >{`Catch 'Em`}</ButtonContained>
+          onClick={() => props.onClick()}
+          fullWidth={true}
+        >
+          {`Catch 'Em`}
+        </ButtonContained>
       </div>
     </div>
   );

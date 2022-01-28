@@ -10,20 +10,18 @@ import MobilePokemonDetail from "Components/organisms/mobile-pokemon-detail";
 import DesktopPokemonDetail from "Components/organisms/desktop-pokemon-detail";
 import { useRouter } from "next/router";
 import { isJson } from "Helpers/common-helper";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+import DialogBox from "Components/molecules/dialog-box";
+import SnackBar from "Components/molecules/notification";
 
 const PokemonList = (props: any) => {
+  const localStorageKey = "myPokemon";
   const router = useRouter();
   const pokemonData = props.pokemonDetails;
   const [pokemonId, setPokemonId] = useState("0");
-  const [isOpenDialog, setIsOpenDialog] = useState(false);
+  const [probability, setProbability] = useState(2); // 0:lose 1:win 2:neutral
   const [name, setName] = useState("");
+  const [openSnackBar, setOpenSnackBar] = useState(false);
+
   const asyncRequest = async (
     requestFunction: Promise<any>,
     setState: (data: any) => void
@@ -36,6 +34,49 @@ const PokemonList = (props: any) => {
     }
   };
 
+  const handleClose = () => {
+    setProbability(2);
+  };
+
+  const handleCatch = () => {
+    const randomNumber = Math.floor(Math.random() * 2);
+    setProbability(randomNumber);
+  };
+
+  const handleInputChange = (e: any) => {
+    setName(e.currentTarget.value);
+  };
+
+  const handleKeep = () => {
+    const prevUserState = props.user;
+    const isNewPokemon = prevUserState[`${pokemonData.id}`] == undefined;
+
+    if (isNewPokemon) {
+      prevUserState[`${pokemonData.id}`] = [`${name}`];
+      const toBeStored = JSON.stringify(prevUserState);
+
+      setOpenSnackBar(true);
+      sessionStorage.setItem(localStorageKey, toBeStored);
+    } else {
+      const existingPokemonNames = prevUserState[`${pokemonData.id}`];
+      const isUseableName = !existingPokemonNames.includes(name);
+
+      if (isUseableName) {
+        existingPokemonNames.push(name);
+        prevUserState[`${pokemonData.id}`] = existingPokemonNames;
+        const toBeStored = JSON.stringify(prevUserState);
+
+        setOpenSnackBar(true);
+        sessionStorage.setItem(localStorageKey, toBeStored);
+      } else {
+        alert("Pokemon name already exist. Please use another one !");
+      }
+    }
+
+    setProbability(2);
+    setName("");
+  };
+
   useEffect(() => {
     const id = router?.query.id;
     if (id != "" && id != undefined) {
@@ -46,95 +87,62 @@ const PokemonList = (props: any) => {
     }
   }, [router, props.retrievePokemonDetails]);
 
-  const handleClick = () => {
-    const randomNumber = Math.floor(Math.random() * 2);
-    setIsOpenDialog(!!randomNumber);
-  };
-
-  const codeChange = (e: any) => {
-    setName(e.currentTarget.value);
-  };
-
-  const handleCatch = () => {
-    const newNickName = name;
-    const prevUserState = props.user;
-
-    const isNewPokemon = prevUserState[`${pokemonData.id}`] == undefined;
-
-    if (isNewPokemon) {
-      prevUserState[`${pokemonData.id}`] = [`${newNickName}`];
-      const toBeStored = JSON.stringify(prevUserState);
-
-      sessionStorage.setItem("pokeItem", toBeStored);
-    } else {
-      const existingPokemonName = prevUserState[`${pokemonData.id}`];
-      const isUseableNickName = !existingPokemonName.includes(newNickName);
-
-      if (isUseableNickName) {
-        existingPokemonName.push(newNickName);
-
-        prevUserState[`${pokemonData.id}`] = existingPokemonName;
-
-        const toBeStored = JSON.stringify(prevUserState);
-
-        sessionStorage.setItem("pokeItem", toBeStored);
-      }
-    }
-    setIsOpenDialog(false);
-    setName("");
-  };
-
   useEffect(() => {
-    const getsession = sessionStorage.getItem("pokeItem");
+    const getsession = sessionStorage.getItem(localStorageKey);
     if (getsession && isJson(getsession)) {
-      const getsessionOb = JSON.parse(getsession);
-
-      props.setUser(getsessionOb);
+      const sessionObject = JSON.parse(getsession);
+      props.setUser(sessionObject);
     }
   }, [props.setUser]);
 
   return (
     <Layout title={`Pokemon | ${pokemonData.name ? pokemonData.name : ""}`}>
+      {console.log("setUser", props.user)}
+      <SnackBar
+        onClose={() => {
+          setOpenSnackBar(false);
+        }}
+        isOpen={openSnackBar}
+      />
       {pokemonId != "0" ? (
         <ViewSwitch
           desktop={
             <DesktopPokemonDetail
               data={pokemonData}
-              onClick={handleClick}
-              disabled={isOpenDialog}
+              onClick={handleCatch}
+              disabled={probability != 2}
             />
           }
           mobile={
             <MobilePokemonDetail
               data={pokemonData}
-              onClick={handleClick}
-              disabled={isOpenDialog}
+              onClick={handleCatch}
+              disabled={probability != 2}
             />
           }
         />
       ) : null}
 
-      <Dialog open={isOpenDialog}>
-        <DialogTitle>{pokemonData.name} is successfully Catched!</DialogTitle>
-        <DialogContent>
-          <DialogContentText>Please give new name:</DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Name"
-            type="email"
-            fullWidth
-            variant="standard"
-            onChange={codeChange}
-            value={name}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setIsOpenDialog(false)}>Release</Button>
-          <Button onClick={handleCatch}>Keep</Button>
-        </DialogActions>
-      </Dialog>
+      <DialogBox
+        isOpen={probability == 1}
+        title={`${pokemonData.name} is successfully catched!`}
+        text="Please give new name:"
+        value={name}
+        onInputChange={handleInputChange}
+        onKeep={handleKeep}
+        onKeepText="Keep"
+        onClose={handleClose}
+        onCloseText="Release"
+      />
+
+      <DialogBox
+        isOpen={probability == 0}
+        title={`${pokemonData.name} is failed to be catched!`}
+        text={`Don't worry you can try catch 'em again`}
+        onClose={handleClose}
+        onCloseText="close"
+        type="notification"
+      />
     </Layout>
   );
 };

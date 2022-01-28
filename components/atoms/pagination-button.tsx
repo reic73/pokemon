@@ -6,10 +6,11 @@ interface IPaginationButton {
 }
 
 const PaginationButton = (props: IPaginationButton) => {
-  const disabled = props.disabled ? true : false;
-  const selected = props.selected ? true : false;
+  const disabled = props.disabled;
+  const selected = props.selected;
 
-  const baseStyle = 'border border-gray-400 w-full h-12 shadow focus:outline-none';
+  const baseStyle =
+    "border border-gray-400 w-full h-12 shadow focus:outline-none";
 
   const buttonStyle = `${baseStyle} text-blue-500 font-semibold hover:bg-gray-200 `;
   const disabledStyle = `${baseStyle} text-gray-500 font-semibold cursor-not-allowed`;
@@ -18,9 +19,12 @@ const PaginationButton = (props: IPaginationButton) => {
   return (
     <button
       type="button"
-      className={selected ? selectedStyle : disabled ? disabledStyle : buttonStyle}
+      className={
+        selected ? selectedStyle : disabled ? disabledStyle : buttonStyle
+      }
       disabled={disabled}
-      onClick={props.onClick}>
+      onClick={props.onClick}
+    >
       {props.children}
     </button>
   );

@@ -10,25 +10,27 @@ interface IButtonContained {
   fullWidth?: boolean;
 }
 
-const ButtonContained = (props: IButtonContained) => {
-  const ColorButton = styled(Button)(({ theme }) => ({
-    color: theme.palette.getContrastText(ColorConstant.valencia),
-    backgroundColor: ColorConstant.valencia,
+const ButtonOutlined = (props: IButtonContained) => {
+  const ColorOutlinedButton = styled(Button)(() => ({
+    color: ColorConstant.valencia,
+    backgroundColor: ColorConstant.white,
+    borderColor: ColorConstant.valencia,
     "&:hover": {
-      backgroundColor: ColorConstant.redCarpet,
+      borderColor: ColorConstant.redCarpet,
     },
   }));
   return (
-    <div className="w-full">
-      <ColorButton
+    <div className="w-full mx-2">
+      <ColorOutlinedButton
         onClick={props.onClick}
         fullWidth={props.fullWidth}
         disabled={props.disabled}
+        variant="outlined"
       >
         {props.children}
-      </ColorButton>
+      </ColorOutlinedButton>
     </div>
   );
 };
 
-export default ButtonContained;
+export default ButtonOutlined;

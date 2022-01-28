@@ -13,7 +13,7 @@ const PokemonList = (props: any) => {
   const router = useRouter();
   const pokemonList = props.pokemonLists;
   const [page, setPage] = useState(1);
-  const prize = useRef<null | HTMLDivElement>(null);
+  const refElement = useRef<null | HTMLDivElement>(null);
   const asyncRequest = async (
     requestFunction: Promise<any>,
     setState: (data: any) => void
@@ -27,7 +27,7 @@ const PokemonList = (props: any) => {
       Request.retrievePokemonLists(page),
       props.retrievePokemonLists
     );
-    prize.current?.scrollIntoView({
+    refElement.current?.scrollIntoView({
       behavior: "smooth",
       block: "start",
       inline: "nearest",
@@ -40,9 +40,12 @@ const PokemonList = (props: any) => {
 
   return (
     <Layout title="Pokemon List">
-      <div ref={prize} className="md:flex md:flex-wrap">
+      <div ref={refElement} className="md:flex md:flex-wrap">
         {pokemonList.data.map((data: any, index: number) => (
-          <div key={index} className="md:w-1/5 md:h-64 md:p-2 md:my-5 my-3">
+          <div
+            key={index}
+            className="lg:w-1/5 md:w-1/3 md:p-1 lg:my-5 lg:p-2 my-3"
+          >
             <ViewSwitch
               desktop={
                 <DesktopPokemonList

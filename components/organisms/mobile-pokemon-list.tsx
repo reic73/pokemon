@@ -28,6 +28,7 @@ const MobilePokemonList = (props: any) => {
           </div>
         </div>
       </div>
+
       <div className="flex items-center">
         <div className="p-1 rounded bg-red-500 text-white flex justify-center text-xs">
           0

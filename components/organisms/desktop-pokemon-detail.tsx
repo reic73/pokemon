@@ -95,9 +95,12 @@ const DesktopPokemonDetail = (props: any) => {
 
       <div className="flex w-full my-8 bg-white">
         <ButtonContained
-          onClick={() => props.onClick(props.data.id)}
+          onClick={() => props.onClick()}
           disabled={props.disabled}
-        >{`Catch 'Em`}</ButtonContained>
+          fullWidth={true}
+        >
+          {`Catch 'Em`}
+        </ButtonContained>
       </div>
     </div>
   );

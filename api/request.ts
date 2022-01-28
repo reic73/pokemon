@@ -32,7 +32,7 @@ export default class Request {
       };
       return toReturn;
     } catch (e) {
-      alert("Data pokemon tidak ditemukan");
+      alert("Pokemon data not found");
     }
   }
 
@@ -81,7 +81,7 @@ export default class Request {
 
       return toReturn;
     } catch (e) {
-      alert("Data pokemon tidak ditemukan");
+      alert("Pokemon data not found");
     }
   }
 }
