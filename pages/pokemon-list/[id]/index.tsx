@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { connect } from "react-redux";
 import { setUser } from "Redux/reducers/user/action";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import Request from "Api/request";
 import { retrievePokemonDetails } from "Redux/reducers/pokemon/action";
 import Layout from "Components/templates/layout";
@@ -52,18 +52,25 @@ const PokemonList = (props: any) => {
     const isNewPokemon = prevUserState[`${pokemonData.id}`] == undefined;
 
     if (isNewPokemon) {
-      prevUserState[`${pokemonData.id}`] = [`${name}`];
+      prevUserState[`${pokemonData.id}`] = {
+        names: [`${name}`],
+        data: {
+          id: pokemonData.id,
+          name: pokemonData.name,
+          image: pokemonData.image,
+        },
+      };
       const toBeStored = JSON.stringify(prevUserState);
 
       setOpenSnackBar(true);
       sessionStorage.setItem(localStorageKey, toBeStored);
     } else {
-      const existingPokemonNames = prevUserState[`${pokemonData.id}`];
+      const existingPokemonNames = prevUserState[`${pokemonData.id}`]["names"];
       const isUseableName = !existingPokemonNames.includes(name);
 
       if (isUseableName) {
         existingPokemonNames.push(name);
-        prevUserState[`${pokemonData.id}`] = existingPokemonNames;
+        prevUserState[`${pokemonData.id}`]["names"] = existingPokemonNames;
         const toBeStored = JSON.stringify(prevUserState);
 
         setOpenSnackBar(true);
@@ -97,6 +104,8 @@ const PokemonList = (props: any) => {
 
   return (
     <Layout title={`Pokemon | ${pokemonData.name ? pokemonData.name : ""}`}>
+      {console.log("pokemon data", pokemonData)}
+      {console.log("user", props.user)}
       <SnackBar
         onClose={() => {
           setOpenSnackBar(false);

@@ -46,7 +46,7 @@ const PokemonList = (props: any) => {
       >
         Pokedex
       </div>
-
+      {console.log("pokemon list", pokemonList)}
       <div className="md:flex md:flex-wrap">
         {pokemonList.data.map((data: any, index: number) => (
           <div
@@ -66,6 +66,7 @@ const PokemonList = (props: any) => {
                   data={data}
                   key={index}
                   onSelect={handleSelect}
+                  id={index}
                 />
               }
             />

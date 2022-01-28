@@ -44,3 +44,30 @@ export const isJson = (str: string) => {
 
   return true;
 };
+
+export const getPokemonDataFromStorage = (data: any) => {
+  const limitPerPage = 20;
+  console.log("data", data);
+  const ids = Object.keys(data);
+  const pokemonList: any[] = [];
+  console.log("ids", ids);
+  ids.map((id: string) => {
+    const pokemonData = data[`${id}`];
+    const pokemonNames = pokemonData["names"];
+    pokemonNames.map((name: string) => {
+      const data = {
+        name,
+        pokemonName: pokemonData.data.name,
+        id: pokemonData.data.id,
+        image: pokemonData.data.image,
+      };
+      pokemonList.push(data);
+    });
+  });
+  const toReturn = {
+    data: pokemonList,
+    maxPage: Math.ceil(pokemonList.length / limitPerPage),
+  };
+
+  return toReturn;
+};

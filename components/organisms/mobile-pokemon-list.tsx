@@ -1,12 +1,13 @@
 import React from "react";
 import Image from "next/image";
 import { pokemonNumberHelper } from "Helpers/common-helper";
+import ButtonOutlined from "Components/atoms/button-outlined";
 
 const MobilePokemonList = (props: any) => {
   return (
     <div
       className={`flex my-2 p-2 rounded-xl cursor-pointer justify-between ${
-        props.data.id % 2 == 0
+        props.id % 2 == 0
           ? "bg-gray-100 hover:bg-gray-300"
           : " border-2 border-gray-100 hover:bg-gray-200"
       }`}
@@ -31,11 +32,28 @@ const MobilePokemonList = (props: any) => {
         </div>
       </div>
 
-      <div className="flex items-center">
-        <div className="p-1 rounded bg-red-500 text-white flex justify-center text-xs">
-          0
-        </div>
-        <div className="p-1 text-xs text-gray-500">owned</div>
+      <div className="flex items-center pr-2">
+        {props.isMyPokedexPage ? (
+          <div
+            className="text-red-500 border border-red-500 px-2 font-semibold rounded hover:bg-red-500 hover:text-white"
+            onClick={(event) => {
+              event.stopPropagation();
+              props.onRelease({ id: props.data.id, name: props.data.name });
+            }}
+            style={{
+              zIndex: 10,
+            }}
+          >
+            Release
+          </div>
+        ) : (
+          <div>
+            <div className="p-1 rounded bg-red-500 text-white flex justify-center text-xs">
+              0
+            </div>
+            <div className="p-1 text-xs text-gray-500">owned</div>
+          </div>
+        )}
       </div>
     </div>
   );
