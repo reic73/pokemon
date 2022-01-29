@@ -11,7 +11,7 @@ const nextConfig = {
       {
         source: "/",
         destination: "/pokemon-list",
-        permanent: false,
+        permanent: true,
       },
     ];
   },

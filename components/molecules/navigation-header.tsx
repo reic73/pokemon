@@ -22,7 +22,7 @@ const NavigationHeader = () => {
         onClick={() => router.push("/pokemon-list")}
       >
         <img
-          src="/pokemon-logo.png"
+          src="/pokemon/pokemon-logo.png"
           alt="pokemon-logo"
           style={{ width: "80px" }}
         />
@@ -44,7 +44,7 @@ const NavigationHeader = () => {
                 onClick={() => router.push("/my-pokemon")}
               >
                 <img
-                  src="/pokeball-line.png"
+                  src="/pokemon/pokeball-line.png"
                   alt="pokemon-ball"
                   style={{ width: "30px" }}
                 />
