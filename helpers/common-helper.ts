@@ -1,3 +1,5 @@
+export const SESSION_KEY = "myPokemon";
+
 export const pokemonNumberHelper = (data: number) => {
   const isUnit = data / 10 < 1;
   const isTens = data / 100 < 1;
@@ -46,9 +48,8 @@ export const isJson = (str: string): boolean => {
 };
 
 export const getSessionStorageData = (): { [index: string]: any } => {
-  const sessionKey = "myPokemon";
   let toReturn = {};
-  const session = sessionStorage.getItem(sessionKey);
+  const session = sessionStorage.getItem(SESSION_KEY);
   if (session && isJson(session)) {
     toReturn = JSON.parse(session);
   }
@@ -128,4 +129,37 @@ export const getPokemonDataFromStorage = (data: any, page: number) => {
   };
 
   return toReturn;
+};
+
+export const setNewPokemonToStorage = (
+  userData: any,
+  pokemonData: any,
+  name: string
+) => {
+  userData[`${pokemonData.id}`] = {
+    names: [`${name}`],
+    data: {
+      id: pokemonData.id,
+      name: pokemonData.name,
+      image: pokemonData.image,
+    },
+  };
+  const toBeStored = JSON.stringify(userData);
+  sessionStorage.setItem(SESSION_KEY, toBeStored);
+
+  return;
+};
+
+export const setExistingPokemonToStorage = (
+  userData: any,
+  pokemonData: any,
+  name: string
+) => {
+  const existingPokemonNames = userData[`${pokemonData.id}`]["names"];
+  existingPokemonNames.push(name);
+  userData[`${pokemonData.id}`]["names"] = existingPokemonNames;
+  const toBeStored = JSON.stringify(userData);
+  sessionStorage.setItem(SESSION_KEY, toBeStored);
+
+  return;
 };

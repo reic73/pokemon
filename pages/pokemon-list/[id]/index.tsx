@@ -5,21 +5,23 @@ import { connect } from "react-redux";
 import { setUser } from "Redux/reducers/user/action";
 import { retrievePokemonDetails } from "Redux/reducers/pokemon/action";
 import Layout from "Components/templates/layout";
-import ViewSwitch from "Components/templates/viewswitch";
-import MobilePokemonDetail from "Components/organisms/mobile-pokemon-detail";
-import DesktopPokemonDetail from "Components/organisms/desktop-pokemon-detail";
-import DialogBox from "Components/molecules/dialog-box";
 import SnackBar from "Components/molecules/notification";
-import { isJson } from "Helpers/common-helper";
+import PokemonDetailView from "Components/organisms/pokemon-detail-view";
+import PokemonDetailDialog from "Components/organisms/pokemon-detail-dialog";
+import {
+  isJson,
+  setExistingPokemonToStorage,
+  setNewPokemonToStorage,
+  SESSION_KEY,
+} from "Helpers/common-helper";
 import { useRouter } from "next/router";
 
 const PokemonList = (props: any) => {
-  const localStorageKey = "myPokemon";
   const router = useRouter();
   const pokemonData = props.pokemonDetails;
+  const [name, setName] = useState("");
   const [pokemonId, setPokemonId] = useState("0");
   const [probability, setProbability] = useState(2); // 0:lose 1:win 2:neutral
-  const [name, setName] = useState("");
   const [openSnackBar, setOpenSnackBar] = useState(false);
 
   const asyncRequest = async (
@@ -36,6 +38,7 @@ const PokemonList = (props: any) => {
 
   const handleClose = () => {
     setProbability(2);
+    setName("");
   };
 
   const handleCatch = () => {
@@ -48,45 +51,35 @@ const PokemonList = (props: any) => {
   };
 
   const handleKeep = () => {
-    const prevUserState = props.user;
-    const isNewPokemon = prevUserState[`${pokemonData.id}`] == undefined;
-    if (name == "") {
-      alert("Name cannot be empty");
-      return;
-    }
+    const userData = props.user;
+    const isNewPokemon = userData[`${pokemonData.id}`] == undefined;
 
     if (isNewPokemon) {
-      prevUserState[`${pokemonData.id}`] = {
-        names: [`${name}`],
-        data: {
-          id: pokemonData.id,
-          name: pokemonData.name,
-          image: pokemonData.image,
-        },
-      };
-      const toBeStored = JSON.stringify(prevUserState);
-
+      setNewPokemonToStorage(userData, pokemonData, name);
       setOpenSnackBar(true);
-      sessionStorage.setItem(localStorageKey, toBeStored);
     } else {
-      const existingPokemonNames = prevUserState[`${pokemonData.id}`]["names"];
+      const existingPokemonNames = userData[`${pokemonData.id}`]["names"];
       const isUseableName = !existingPokemonNames.includes(name);
 
       if (isUseableName) {
-        existingPokemonNames.push(name);
-        prevUserState[`${pokemonData.id}`]["names"] = existingPokemonNames;
-        const toBeStored = JSON.stringify(prevUserState);
-
+        setExistingPokemonToStorage(userData, pokemonData, name);
         setOpenSnackBar(true);
-        sessionStorage.setItem(localStorageKey, toBeStored);
       } else {
         alert("Pokemon name already exist. Please use another one !");
+        return;
       }
     }
 
-    setProbability(2);
-    setName("");
+    handleClose();
   };
+
+  useEffect(() => {
+    const getsession = sessionStorage.getItem(SESSION_KEY);
+    if (getsession && isJson(getsession)) {
+      const sessionObject = JSON.parse(getsession);
+      props.setUser(sessionObject);
+    }
+  }, []);
 
   useEffect(() => {
     const id = router?.query.id;
@@ -96,64 +89,36 @@ const PokemonList = (props: any) => {
         props.retrievePokemonDetails
       );
     }
-  }, [router, props.retrievePokemonDetails]);
-
-  useEffect(() => {
-    const getsession = sessionStorage.getItem(localStorageKey);
-    if (getsession && isJson(getsession)) {
-      const sessionObject = JSON.parse(getsession);
-      props.setUser(sessionObject);
-    }
-  }, [props.setUser]);
+  }, [router]);
 
   return (
     <Layout title={`Pokemon | ${pokemonData.name ? pokemonData.name : ""}`}>
-      {console.log("pokemon data", pokemonData)}
-      {console.log("user", props.user)}
       <SnackBar
         onClose={() => {
           setOpenSnackBar(false);
         }}
         isOpen={openSnackBar}
       />
+
       {pokemonId != "0" ? (
-        <ViewSwitch
-          desktop={
-            <DesktopPokemonDetail
-              data={pokemonData}
-              onClick={handleCatch}
-              disabled={probability != 2}
-            />
-          }
-          mobile={
-            <MobilePokemonDetail
-              data={pokemonData}
-              onClick={handleCatch}
-              disabled={probability != 2}
-            />
-          }
+        <PokemonDetailView
+          data={pokemonData}
+          onClick={handleCatch}
+          probability={probability}
         />
-      ) : null}
+      ) : (
+        <div className="border py-16 flex justify-center rounded">
+          Loading Data
+        </div>
+      )}
 
-      <DialogBox
-        isOpen={probability == 1}
-        title={`${pokemonData.name} is successfully catched!`}
-        text="Please give new name:"
-        value={name}
-        onInputChange={handleInputChange}
+      <PokemonDetailDialog
+        probability={probability}
+        pokemonName={pokemonData.name}
+        inputValue={name}
+        onChange={handleInputChange}
         onKeep={handleKeep}
-        onKeepText="Keep"
         onClose={handleClose}
-        onCloseText="Release"
-      />
-
-      <DialogBox
-        isOpen={probability == 0}
-        title={`${pokemonData.name} is failed to be catched!`}
-        text={`Don't worry you can try catch 'em again`}
-        onClose={handleClose}
-        onCloseText="close"
-        type="notification"
       />
     </Layout>
   );

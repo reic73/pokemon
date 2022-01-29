@@ -13,7 +13,7 @@ interface IDialogBox {
   isOpen: boolean;
   title: string;
   text: string;
-  value?: string;
+  value: string;
   onInputChange?: (e: any) => void;
   onKeep?: () => void;
   onKeepText?: string;
@@ -23,6 +23,8 @@ interface IDialogBox {
 }
 
 const DialogBox = (props: IDialogBox) => {
+  const maxCharacter = 12;
+  const isError = props.value?.length >= maxCharacter;
   return (
     <Dialog open={props.isOpen}>
       <DialogTitle>{props.title}</DialogTitle>
@@ -30,25 +32,37 @@ const DialogBox = (props: IDialogBox) => {
       <DialogContent>
         <DialogContentText>{props.text}</DialogContentText>
         {props.type != "notification" ? (
-          <TextField
-            margin="dense"
-            id="name"
-            label="Name"
-            fullWidth
-            variant="standard"
-            onChange={props.onInputChange}
-            value={props.value}
-          />
+          <div>
+            {console.log("is eror", isError)}
+            <TextField
+              margin="dense"
+              id="name"
+              label="Name"
+              fullWidth
+              variant="standard"
+              onChange={props.onInputChange}
+              value={props.value}
+              error={isError}
+              helperText={
+                isError
+                  ? `Max ${maxCharacter} characters.`
+                  : `${maxCharacter - props.value?.length} characters left.`
+              }
+            />
+          </div>
         ) : null}
       </DialogContent>
 
       <DialogActions>
-        <div className="flex justify-end">
+        <div className="flex justify-end mb-2">
           <ButtonOutlined onClick={props.onClose}>
             {props.onCloseText}
           </ButtonOutlined>
           {props.type != "notification" ? (
-            <ButtonContained onClick={props.onKeep}>
+            <ButtonContained
+              onClick={props.onKeep}
+              disabled={isError || props.value?.length == 0}
+            >
               {props.onKeepText}
             </ButtonContained>
           ) : null}

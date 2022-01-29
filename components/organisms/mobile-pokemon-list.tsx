@@ -67,7 +67,7 @@ const MobilePokemonList = (props: IMobilePokemonList) => {
             <div className="p-1 rounded bg-red-500 text-white flex justify-center text-xs">
               {props.data.owned}
             </div>
-            <div className="p-1 text-xs text-gray-500">owned</div>
+            <div className="p-1 text-xs text-gray-500">Owned</div>
           </div>
         )}
       </div>

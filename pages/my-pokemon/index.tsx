@@ -13,11 +13,11 @@ import {
   isJson,
   getPokemonDataFromStorage,
   getSessionStorageData,
+  SESSION_KEY,
 } from "Helpers/common-helper";
 import SnackBar from "Components/molecules/notification";
 
 const MyPokemon = (props: any) => {
-  const localStorageKey = "myPokemon";
   const router = useRouter();
   const [page, setPage] = useState(1);
   const [openSnackBar, setOpenSnackBar] = useState(false);
@@ -54,21 +54,21 @@ const MyPokemon = (props: any) => {
   };
 
   const handleRelease = (data: any) => {
-    const prevUserState = props.user;
+    const userData = props.user;
     const releaseId = data.id;
     const releaseName = data.name;
     const sessionData = getSessionStorageData();
-    console.log("prevUser", prevUserState);
+    console.log("prevUser", userData);
     console.log("session1", sessionData);
-    const prevPokemonNames = prevUserState[`${releaseId}`]["names"];
+    const prevPokemonNames = userData[`${releaseId}`]["names"];
 
     const updatedPokemonNames = prevPokemonNames.filter(
       (value: string) => value != releaseName
     );
-    prevUserState[`${releaseId}`]["names"] = updatedPokemonNames;
+    userData[`${releaseId}`]["names"] = updatedPokemonNames;
 
-    const toBeStored = JSON.stringify(prevUserState);
-    sessionStorage.setItem(localStorageKey, toBeStored);
+    const toBeStored = JSON.stringify(userData);
+    sessionStorage.setItem(SESSION_KEY, toBeStored);
     const session2 = getSessionStorageData();
 
     const data1 = getPokemonDataFromStorage(session2, page);
@@ -78,8 +78,7 @@ const MyPokemon = (props: any) => {
   };
 
   useEffect(() => {
-    console.log("test masuk");
-    const getsession = sessionStorage.getItem(localStorageKey);
+    const getsession = sessionStorage.getItem(SESSION_KEY);
     if (getsession && isJson(getsession)) {
       const sessionObject = JSON.parse(getsession);
       props.setUser(sessionObject);
