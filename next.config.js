@@ -1,20 +1,14 @@
 /** @type {import('next').NextConfig} */
+
+const isLocal = process.env.NEXT_PUBLIC_ENV == "local";
+const baseUrl = isLocal ? "" : "/" + process.env.PROJECT_NAME;
 const nextConfig = {
   reactStrictMode: true,
   images: {
     domains: ["raw.githubusercontent.com"],
   },
-  basePath: "/pokemon",
-  assetPrefix: "/pokemon",
-  async redirects() {
-    return [
-      {
-        source: "/",
-        destination: "/pokemon-list",
-        permanent: true,
-      },
-    ];
-  },
+  basePath: baseUrl,
+  assetPrefix: baseUrl,
 };
 
 module.exports = nextConfig;

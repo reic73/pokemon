@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
-import TextButton from "Components/atoms/button-text";
 import ColorConstant from "Constants/colors";
 import { useRouter } from "next/router";
 import ViewSwitch from "Components/templates/viewswitch";
+import { getUrl } from "Helpers/common-helper";
 
 const NavigationHeader = () => {
   const router = useRouter();
@@ -19,10 +19,10 @@ const NavigationHeader = () => {
     >
       <div
         className="flex items-center cursor-pointer"
-        onClick={() => router.push("/pokemon-list")}
+        onClick={() => router.push("/")}
       >
         <img
-          src="/pokemon/pokemon-logo.png"
+          src={getUrl("/pokemon-logo.png")}
           alt="pokemon-logo"
           style={{ width: "80px" }}
         />
@@ -44,7 +44,7 @@ const NavigationHeader = () => {
                 onClick={() => router.push("/my-pokemon")}
               >
                 <img
-                  src="/pokemon/pokeball-line.png"
+                  src={getUrl("/pokeball-line.png")}
                   alt="pokemon-ball"
                   style={{ width: "30px" }}
                 />
