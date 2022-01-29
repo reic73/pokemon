@@ -1,7 +1,6 @@
 import React from "react";
 import TextButton from "Components/atoms/button-text";
 import ColorConstant from "Constants/colors";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import ViewSwitch from "Components/templates/viewswitch";
 
@@ -21,12 +20,10 @@ const NavigationHeader = () => {
         className="flex items-center cursor-pointer"
         onClick={() => router.push("/pokemon-list")}
       >
-        <Image
+        <img
           src="/pokemon-logo.png"
-          alt="pokemon-list"
-          width={80}
-          height={30}
-          className="absolute z-0"
+          alt="pokemon-logo"
+          style={{ width: "80px" }}
         />
       </div>
       <div className="flex items-center">
@@ -45,12 +42,10 @@ const NavigationHeader = () => {
                 className="flex items-center cursor-pointer px-2"
                 onClick={() => router.push("/my-pokemon")}
               >
-                <Image
+                <img
                   src="/pokeball-line.png"
                   alt="pokemon-ball"
-                  width={30}
-                  height={30}
-                  className="absolute z-0"
+                  style={{ width: "30px" }}
                 />
               </div>
             }

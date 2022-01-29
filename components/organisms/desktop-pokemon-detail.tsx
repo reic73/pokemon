@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import { pokemonNumberHelper } from "Helpers/common-helper";
 import typeColors from "Constants/pokemon-types-color";
 import ButtonContained from "Components/atoms/button-contained";
@@ -9,11 +8,10 @@ const DesktopPokemonDetail = (props: any) => {
     <div className="mt-10 mx-40">
       <div className="flex">
         <div className="flex justify-center bg-gray-200 rounded overflow-hidden">
-          <Image
+          <img
             src={props.data.image}
-            alt="pokemon-list"
-            width={600}
-            height={600}
+            alt="pokemon-detail"
+            style={{ width: "600px" }}
           />
         </div>
 

@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import { pokemonNumberHelper } from "Helpers/common-helper";
 
 interface IMobilePokemonList {
@@ -25,12 +24,10 @@ const MobilePokemonList = (props: IMobilePokemonList) => {
       onClick={() => props.onSelect(props.data.id)}
     >
       <div className="flex">
-        <Image
+        <img
           src={props.data.image}
           alt="pokemon-list"
-          width={75}
-          height={75}
-          className="absolute z-0"
+          style={{ width: "75px" }}
         />
 
         <div className="flex items-center ml-3 font-bold text-sm">

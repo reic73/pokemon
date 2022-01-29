@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import { pokemonNumberHelper } from "Helpers/common-helper";
 import typeColors from "Constants/pokemon-types-color";
 import ButtonContained from "Components/atoms/button-contained";
@@ -17,11 +16,10 @@ const MobilePokemonDetail = (props: any) => {
       </div>
 
       <div className="flex justify-center bg-gray-200 rounded my-4 overflow-hidden">
-        <Image
+        <img
           src={props.data.image}
-          alt="pokemon-list"
-          width={400}
-          height={400}
+          alt="pokemon-detail"
+          style={{ width: "400px" }}
         />
       </div>
 

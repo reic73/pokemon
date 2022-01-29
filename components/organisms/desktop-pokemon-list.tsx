@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import { pokemonNumberHelper } from "Helpers/common-helper";
 
 interface IDesktopPokemonList {
@@ -22,11 +21,10 @@ const DesktopPokemonList = (props: IDesktopPokemonList) => {
       onClick={() => props.onSelect(props.data.id)}
     >
       <div className="flex justify-center">
-        <Image
+        <img
           src={props.data.image}
           alt="pokemon-list"
-          width={185}
-          height={185}
+          style={{ width: "185px" }}
         />
       </div>
 
