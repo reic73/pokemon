@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 const isLocal = process.env.NEXT_PUBLIC_ENV == "local";
-const baseUrl = isLocal ? "" : "/" + process.env.PROJECT_NAME;
+const baseUrl = isLocal ? "" : "/" + process.env.NEXT_PUBLIC_PROJECT_NAME;
 const nextConfig = {
   reactStrictMode: true,
   images: {
