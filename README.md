@@ -1,15 +1,24 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
-
-First, run the development server:
-
+Follow this step to run in local:
+1. You need to install all depedencies
 ```bash
-npm run dev
-# or
-yarn dev
-```
+yarn install
+``` 
 
+2. Then open .env file. Change value either "local" or "production"
+```bash
+NEXT_PUBLIC_ENV= local
+# or
+NEXT_PUBLIC_ENV= production
+``` 
+Choose local to run repo in your local development.
+
+3. Use this command to start in local development
+```bash
+yarn watch-server
+``` 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
