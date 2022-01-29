@@ -183,3 +183,13 @@ export const releasePokemon = (
 
   return getPokemonDataFromStorage(sessionData, page);
 };
+
+export const getUrl = (url: string): string => {
+  const isLocal = process.env.NEXT_PUBLIC_ENV == "local";
+  const projectName = process.env.NEXT_PUBLIC_PROJECT_NAME;
+  if (!isLocal) {
+    return "/" + projectName + url;
+  }
+
+  return url;
+};
