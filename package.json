@@ -6,7 +6,7 @@
     "build": "next build",
     "export": "next export",
     "start": "next start",
-    "watch-server": "next -p 3005",
+    "watch-server": "next -p 3000",
     "lint": "next lint"
   },
   "dependencies": {
