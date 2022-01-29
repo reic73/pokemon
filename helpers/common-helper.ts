@@ -1,4 +1,5 @@
 export const SESSION_KEY = "myPokemon";
+export const PER_PAGE = 20;
 
 export const pokemonNumberHelper = (data: number) => {
   const isUnit = data / 10 < 1;
@@ -101,8 +102,7 @@ export const getPokemonTypes = (data: any): string[] => {
 };
 
 export const getPokemonDataFromStorage = (data: any, page: number) => {
-  const limitPerPage = 20;
-  const offset = (page - 1) * 20;
+  const offset = (page - 1) * PER_PAGE;
   let iteration = 0;
   const ids = Object.keys(data);
   const pokemonList: any[] = [];
@@ -122,10 +122,11 @@ export const getPokemonDataFromStorage = (data: any, page: number) => {
     });
   });
 
-  const end = iteration - offset < limitPerPage ? iteration : limitPerPage;
+  const end = iteration - offset < PER_PAGE ? iteration : PER_PAGE;
   const toReturn = {
     data: pokemonList.slice(offset, end),
-    maxPage: Math.ceil(pokemonList.length / limitPerPage),
+    maxPage: Math.ceil(pokemonList.length / PER_PAGE),
+    totalOwned: pokemonList.length,
   };
 
   return toReturn;
@@ -162,4 +163,23 @@ export const setExistingPokemonToStorage = (
   sessionStorage.setItem(SESSION_KEY, toBeStored);
 
   return;
+};
+
+export const releasePokemon = (
+  userData: any,
+  releasedPokemon: any,
+  page: number
+) => {
+  const pokemonNames = userData[`${releasedPokemon.id}`]["names"];
+  const updatedPokemonNames = pokemonNames.filter(
+    (value: string) => value != releasedPokemon.name
+  );
+  userData[`${releasedPokemon.id}`]["names"] = updatedPokemonNames;
+
+  const toBeStored = JSON.stringify(userData);
+  sessionStorage.setItem(SESSION_KEY, toBeStored);
+
+  const sessionData = getSessionStorageData();
+
+  return getPokemonDataFromStorage(sessionData, page);
 };

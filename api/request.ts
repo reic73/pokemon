@@ -1,14 +1,12 @@
 import Axios from "axios";
 import {
-  slugToCapitalizeEachWord,
   capitalizeEachWord,
-} from "Helpers/common-helper";
-import {
   getSessionStorageData,
   getOwnedPokemonOuantity,
   getPokemonAbilities,
   getPokemonMoves,
   getPokemonTypes,
+  PER_PAGE,
 } from "Helpers/common-helper";
 import { IPokemonDetails, IPokemonLists } from "Redux/reducers/pokemon/reducer";
 
@@ -18,13 +16,12 @@ export default class Request {
     page: number
   ): Promise<IPokemonLists | undefined> {
     try {
-      const perPage = 20;
-      const url = `${mainUrl}/api/v2/pokemon?limit=${perPage}&offset=${
-        perPage * (page - 1)
+      const url = `${mainUrl}/api/v2/pokemon?limit=${PER_PAGE}&offset=${
+        PER_PAGE * (page - 1)
       }`;
       const sessionData = getSessionStorageData();
       const response = await Axios.get(url);
-      const maxPage = Math.ceil(response.data.count / perPage);
+      const maxPage = Math.ceil(response.data.count / PER_PAGE);
 
       const pokemonData = response.data.results;
       const promises = pokemonData.map(async (data: any) => {

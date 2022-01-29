@@ -33,7 +33,6 @@ const DialogBox = (props: IDialogBox) => {
         <DialogContentText>{props.text}</DialogContentText>
         {props.type != "notification" ? (
           <div>
-            {console.log("is eror", isError)}
             <TextField
               margin="dense"
               id="name"

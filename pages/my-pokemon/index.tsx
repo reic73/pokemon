@@ -1,21 +1,18 @@
-import { connect } from "react-redux";
 import React, { useEffect, useState, useRef } from "react";
+import { connect } from "react-redux";
 import Request from "Api/request";
+import Layout from "Components/templates/layout";
+import SnackBar from "Components/molecules/notification";
+import Pagination from "Components/templates/pagination";
+import {
+  getPokemonDataFromStorage,
+  releasePokemon,
+  getSessionStorageData,
+} from "Helpers/common-helper";
 import { setUser } from "Redux/reducers/user/action";
 import { retrievePokemonLists } from "Redux/reducers/pokemon/action";
-import Layout from "Components/templates/layout";
-import ViewSwitch from "Components/templates/viewswitch";
-import MobilePokemonList from "Components/organisms/mobile-pokemon-list";
-import DesktopPokemonList from "Components/organisms/desktop-pokemon-list";
-import Pagination from "Components/templates/pagination";
 import { useRouter } from "next/router";
-import {
-  isJson,
-  getPokemonDataFromStorage,
-  getSessionStorageData,
-  SESSION_KEY,
-} from "Helpers/common-helper";
-import SnackBar from "Components/molecules/notification";
+import MyPokemonView from "Components/organisms/my-pokemon-view";
 
 const MyPokemon = (props: any) => {
   const router = useRouter();
@@ -24,11 +21,14 @@ const MyPokemon = (props: any) => {
   const [pokemonData, setPokemonData] = useState<{
     data: any[];
     maxPage: number;
+    totalOwned: number;
   }>({
     data: [],
     maxPage: 1,
+    totalOwned: 0,
   });
   const refElement = useRef<null | HTMLDivElement>(null);
+
   const asyncRequest = async (
     requestFunction: Promise<any>,
     setState: (data: any) => void
@@ -47,44 +47,25 @@ const MyPokemon = (props: any) => {
       block: "start",
       inline: "nearest",
     });
-  }, [props.retrievePokemonLists, page]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
 
   const handleSelect = (id: number) => {
     router.push(`/pokemon-list/${id}`);
   };
 
   const handleRelease = (data: any) => {
-    const userData = props.user;
-    const releaseId = data.id;
-    const releaseName = data.name;
-    const sessionData = getSessionStorageData();
-    console.log("prevUser", userData);
-    console.log("session1", sessionData);
-    const prevPokemonNames = userData[`${releaseId}`]["names"];
+    const updatedPokemonData = releasePokemon(props.user, data, page);
 
-    const updatedPokemonNames = prevPokemonNames.filter(
-      (value: string) => value != releaseName
-    );
-    userData[`${releaseId}`]["names"] = updatedPokemonNames;
-
-    const toBeStored = JSON.stringify(userData);
-    sessionStorage.setItem(SESSION_KEY, toBeStored);
-    const session2 = getSessionStorageData();
-
-    const data1 = getPokemonDataFromStorage(session2, page);
-    setPokemonData(data1);
+    setPokemonData(updatedPokemonData);
     setOpenSnackBar(true);
-    console.log("session2", session2);
   };
 
   useEffect(() => {
-    const getsession = sessionStorage.getItem(SESSION_KEY);
-    if (getsession && isJson(getsession)) {
-      const sessionObject = JSON.parse(getsession);
-      props.setUser(sessionObject);
-      const data = getPokemonDataFromStorage(sessionObject, page);
-      setPokemonData(data);
-    }
+    const sessionData = getSessionStorageData();
+    props.setUser(sessionData);
+    const data = getPokemonDataFromStorage(sessionData, page);
+    setPokemonData(data);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
@@ -96,65 +77,22 @@ const MyPokemon = (props: any) => {
         }}
         isOpen={openSnackBar}
       />
+
       <div
-        className="flex justify-center text-2xl font-bold py-2 text-red-500"
+        className="flex justify-center text-2xl font-bold pt-2 text-red-500"
         ref={refElement}
       >
         My Pokemon
       </div>
-      <div className="md:flex md:flex-wrap">
-        {pokemonData.data.length ? (
-          pokemonData.data.map((data: any, index: number) => (
-            <div
-              key={index}
-              className="lg:w-1/5 md:w-1/3 md:p-1 lg:my-5 lg:p-2 my-3"
-            >
-              <ViewSwitch
-                desktop={
-                  <DesktopPokemonList
-                    data={data}
-                    key={index}
-                    onSelect={handleSelect}
-                    isMyPokemonPage={true}
-                    onRelease={handleRelease}
-                  />
-                }
-                mobile={
-                  <MobilePokemonList
-                    data={data}
-                    key={index}
-                    onSelect={handleSelect}
-                    id={index}
-                    isMyPokemonPage={true}
-                    onRelease={handleRelease}
-                  />
-                }
-              />
-            </div>
-          ))
-        ) : (
-          <div className="border w-full rounded my-4">
-            <ViewSwitch
-              desktop={
-                <div className="flex justify-center items-center h-36">
-                  <div className="grid place-items-center">
-                    <div>You have no Pokemon yet!</div>
-                    <div className="text-red-500 font-semibold text-lg">{`Go catch 'em!`}</div>
-                  </div>
-                </div>
-              }
-              mobile={
-                <div className="flex justify-center items-center h-20">
-                  <div className="grid place-items-center">
-                    <div className="text-sm">You have no Pokemon yet!</div>
-                    <div className="text-red-500 font-semibold">{`Go catch 'em!`}</div>
-                  </div>
-                </div>
-              }
-            />
-          </div>
-        )}
+      <div className="flex justify-center font-bold  text-red-500">
+        {pokemonData.totalOwned ? `${pokemonData.totalOwned} Pokemon` : ""}
       </div>
+
+      <MyPokemonView
+        pokemonData={pokemonData}
+        onSelect={handleSelect}
+        onRelease={handleRelease}
+      />
 
       <Pagination page={page} setPage={setPage} maxPage={pokemonData.maxPage} />
     </Layout>

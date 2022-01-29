@@ -33,9 +33,12 @@ const NavigationHeader = () => {
         {router.pathname != "/my-pokemon" ? (
           <ViewSwitch
             desktop={
-              <TextButton onClick={() => router.push("/my-pokemon")}>
+              <div
+                className="text-white font-semibold text-lg"
+                onClick={() => router.push("/my-pokemon")}
+              >
                 My Pokemon
-              </TextButton>
+              </div>
             }
             mobile={
               <div
