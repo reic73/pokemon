@@ -2,17 +2,19 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['raw.githubusercontent.com'],
+    domains: ["raw.githubusercontent.com"],
   },
+  basePath: "/pokemon",
+  assetPrefix: "/pokemon",
   async redirects() {
     return [
       {
-        source: '/',
-        destination: '/pokemon-list',
+        source: "/",
+        destination: "/pokemon-list",
         permanent: false,
       },
-    ]
+    ];
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
