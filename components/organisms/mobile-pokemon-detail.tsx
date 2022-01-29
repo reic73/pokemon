@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { pokemonNumberHelper } from "Helpers/common-helper";
 import typeColors from "Constants/pokemon-types-color";

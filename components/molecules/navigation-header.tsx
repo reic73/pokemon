@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import TextButton from "Components/atoms/button-text";
 import ColorConstant from "Constants/colors";
