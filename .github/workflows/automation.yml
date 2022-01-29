@@ -2,8 +2,8 @@ name : Build and release Next.js web application
 on: push
 jobs:
   build-project:
-    name:Build Next.js application
-    runs-on:ubuntu-latest
+    name : Build Next.js application
+    runs-on : ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
