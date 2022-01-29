@@ -34,7 +34,7 @@ const NavigationHeader = () => {
           <ViewSwitch
             desktop={
               <div
-                className="text-white font-semibold text-lg"
+                className="text-white font-semibold text-lg cursor-pointer"
                 onClick={() => router.push("/my-pokemon")}
               >
                 My Pokemon
