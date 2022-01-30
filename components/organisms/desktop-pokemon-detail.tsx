@@ -6,7 +6,7 @@ import ButtonContained from "Components/atoms/button-contained";
 
 const DesktopPokemonDetail = (props: any) => {
   return (
-    <div className="mt-10 mx-40">
+    <div className="mt-10 mx-10 lg:mx-40">
       <div className="flex">
         <div className="flex justify-center bg-gray-200 rounded overflow-hidden">
           <img
