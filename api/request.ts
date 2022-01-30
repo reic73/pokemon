@@ -7,6 +7,7 @@ import {
   getPokemonMoves,
   getPokemonTypes,
   PER_PAGE,
+  slugToCapitalizeEachWord,
 } from "Helpers/common-helper";
 import { IPokemonDetails, IPokemonLists } from "Redux/reducers/pokemon/reducer";
 
@@ -33,6 +34,7 @@ export default class Request {
         data["id"] = pokemonDetails.data.id;
         data["image"] = pokemonDetails.data.sprites.front_default;
         data["owned"] = ownedPokemonQuantity;
+        data["name"] = slugToCapitalizeEachWord(data.name);
       });
       await Promise.all(promises);
 
@@ -61,7 +63,7 @@ export default class Request {
       const types = getPokemonTypes(responseData.types);
       const height = responseData.height;
       const weight = responseData.weight;
-      const name = capitalizeEachWord(responseData.forms[0].name);
+      const name = slugToCapitalizeEachWord(responseData.forms[0].name);
       const image = responseData.sprites.front_default;
       const pokemonId = responseData.id;
 
