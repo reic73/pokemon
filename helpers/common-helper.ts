@@ -101,8 +101,12 @@ export const getPokemonTypes = (data: any): string[] => {
   return typeLists;
 };
 
-export const getPokemonDataFromStorage = (data: any, page: number) => {
-  const offset = (page - 1) * PER_PAGE;
+export const getPokemonDataFromStorage = (
+  data: any,
+  page: number,
+  perPage: number = PER_PAGE
+) => {
+  const offset = (page - 1) * perPage;
   let iteration = 0;
   const ids = Object.keys(data);
   const pokemonList: any[] = [];
@@ -122,10 +126,10 @@ export const getPokemonDataFromStorage = (data: any, page: number) => {
     });
   });
 
-  const end = iteration - offset < PER_PAGE ? iteration : PER_PAGE;
+  const end = iteration - offset < perPage ? iteration : perPage;
   const toReturn = {
     data: pokemonList.slice(offset, end),
-    maxPage: Math.ceil(pokemonList.length / PER_PAGE),
+    maxPage: Math.ceil(pokemonList.length / perPage),
     totalOwned: pokemonList.length,
   };
 

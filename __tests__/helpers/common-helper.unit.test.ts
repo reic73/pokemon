@@ -3,9 +3,15 @@
  */
 
 import * as helper from "Helpers/common-helper";
+require("dotenv").config({ path: "./.env" });
+const OLD_ENV = process.env;
 
 export const SESSION_KEY = "myPokemon";
 export const PER_PAGE = 20;
+
+afterAll(() => {
+  process.env = OLD_ENV; // Restore old environment
+});
 
 describe("Helper test", () => {
   describe("constant", () => {
@@ -102,8 +108,6 @@ describe("Helper test", () => {
       const result = helper.getSessionStorageData();
 
       expect(result).toEqual({ key: "value" });
-
-      sessionStorage.removeItem(SESSION_KEY);
     });
   });
 
@@ -133,7 +137,6 @@ describe("Helper test", () => {
       ];
 
       const result = helper.getPokemonAbilities(data);
-      console.log("result", result);
       expect(result).toBe("Ability one");
     });
   });
@@ -198,6 +201,43 @@ describe("Helper test", () => {
 
       expect(result).toEqual(expectedResult);
     });
+
+    it("should return pokemon data from storage when names more than PER_PAGE", () => {
+      const data = {
+        1: {
+          data: {
+            id: 1,
+            image: "image",
+            name: "Venusaur",
+          },
+          names: ["My Pokemon 1", "My Pokemon 2", "My Pokemon 3"],
+        },
+      };
+      const page = 1;
+      const perPage = 2;
+      const expectedResult = {
+        data: [
+          {
+            id: 1,
+            image: "image",
+            name: "My Pokemon 1",
+            pokemonName: "Venusaur",
+          },
+          {
+            id: 1,
+            image: "image",
+            name: "My Pokemon 2",
+            pokemonName: "Venusaur",
+          },
+        ],
+        maxPage: 2,
+        totalOwned: 3,
+      };
+
+      const result = helper.getPokemonDataFromStorage(data, page, perPage);
+
+      expect(result).toEqual(expectedResult);
+    });
   });
 
   describe("setNewPokemonToStorage", () => {
@@ -220,6 +260,29 @@ describe("Helper test", () => {
       const name = "Ivy";
 
       helper.setNewPokemonToStorage(data, pokemonData, name); // not finished
+    });
+  });
+
+  describe("setExistingPokemonToStorage", () => {
+    it("should return void and set existing pokemon to storage", () => {
+      const data = {
+        1: {
+          data: {
+            id: 1,
+            image: "image",
+            name: "Venusaur",
+          },
+          names: ["My Pokemon 1"],
+        },
+      };
+      const pokemonData = {
+        id: 1,
+        image: "image",
+        name: "Venusaur",
+      };
+      const name = "My Pokemon 2";
+
+      helper.setExistingPokemonToStorage(data, pokemonData, name); // not finished
     });
   });
 
@@ -257,16 +320,20 @@ describe("Helper test", () => {
   });
 
   describe("getUrl", () => {
-    it("should return modified url", () => {
+    it("should return local url", () => {
+      process.env.NEXT_PUBLIC_ENV = "local";
       const url = "/my-url";
-      const isLocal = process.env.NEXT_PUBLIC_ENV == "local";
-      const projectName = process.env;
-      console.log("isLocal", isLocal);
-      console.log("projectname", projectName);
-
       const result = helper.getUrl(url);
-      console.log("result", result);
-      // expect(result).toEqual(expectedResult);
+
+      expect(result).toEqual(url);
+    });
+
+    it("should return production url", () => {
+      process.env.NEXT_PUBLIC_ENV = "production";
+      const url = "/my-url";
+      const result = helper.getUrl(url);
+
+      expect(result).toEqual("/" + process.env.NEXT_PUBLIC_PROJECT_NAME + url);
     });
   });
 });
