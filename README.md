@@ -10,11 +10,17 @@ yarn install
 2. Then open .env file. Change value to "local" 
 ```bash
 NEXT_PUBLIC_ENV= local
+NEXT_PUBLIC_PROJECT_NAME= pokemon
 ``` 
 
 3. Use this command to start in local development
 ```bash
 yarn watch-server
+``` 
+
+4. Run test using
+```bash
+yarn test
 ``` 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 

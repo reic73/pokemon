@@ -4,5 +4,5 @@ module.exports = {
   moduleNameMapper: {
     "Helpers/(.*)$": "<rootDir>/helpers/$1",
   },
-  collectCoverage: false,
+  collectCoverage: true,
 };

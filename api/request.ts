@@ -61,9 +61,7 @@ export default class Request {
       const types = getPokemonTypes(responseData.types);
       const height = responseData.height;
       const weight = responseData.weight;
-      console.log("name1", responseData.forms[0].name);
       const name = capitalizeEachWord(responseData.forms[0].name);
-      console.log("name2", name);
       const image = responseData.sprites.front_default;
       const pokemonId = responseData.id;
 
