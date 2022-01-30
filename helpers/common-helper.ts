@@ -1,6 +1,8 @@
+// sudah
 export const SESSION_KEY = "myPokemon";
 export const PER_PAGE = 20;
 
+// sudah
 export const pokemonNumberHelper = (data: number) => {
   const isUnit = data / 10 < 1;
   const isTens = data / 100 < 1;
@@ -26,7 +28,8 @@ export const capitalizeEachWord = (words: string) => {
   return capitalizeWord(wordList);
 };
 
-const capitalizeWord = (wordList: string[]) => {
+// sudah
+export const capitalizeWord = (wordList: string[]) => {
   const length: number = wordList.length;
   let toReturn = "";
   wordList.map((word, index: number) => {
@@ -38,6 +41,7 @@ const capitalizeWord = (wordList: string[]) => {
   return toReturn;
 };
 
+// sudah
 export const isJson = (str: string): boolean => {
   try {
     JSON.parse(str);
@@ -58,6 +62,7 @@ export const getSessionStorageData = (): { [index: string]: any } => {
   return toReturn;
 };
 
+// sudah
 export const getOwnedPokemonOuantity = (id: number, data: any): number => {
   let toReturn = 0;
   const isOwned = data[`${id}`] != undefined;
@@ -102,6 +107,7 @@ export const getPokemonTypes = (data: any): string[] => {
 };
 
 export const getPokemonDataFromStorage = (data: any, page: number) => {
+  console.log(" data", data);
   const offset = (page - 1) * PER_PAGE;
   let iteration = 0;
   const ids = Object.keys(data);
