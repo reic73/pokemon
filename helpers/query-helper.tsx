@@ -8,8 +8,7 @@ export const createQuery = (data: any) => {
 };
 
 export const readQuery = () => {
-  if (typeof window !== "undefined") {
-  const urlParams = new URLSearchParams(window.location.search);
-  return urlParams;
-}
+const  urlParams = new URLSearchParams(window.location.search);
+
+return urlParams;
 }; 
