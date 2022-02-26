@@ -19,18 +19,18 @@ import { readQuery } from "Helpers/query-helper";
 
 const PokemonList = (props: any) => {
   const router = useRouter();
-  const queryData = readQuery();
   const pokemonData = props.pokemonDetails;
   const [name, setName] = useState("");
   const [pokemonId, setPokemonId] = useState("0");
   const [probability, setProbability] = useState(2); // 0:lose 1:win 2:neutral
   const [openSnackBar, setOpenSnackBar] = useState(false);
-  // const [value, setValue] = useState(queryData.get('info') === 'syarat' ? 1 : 0)
   let id:null|string = '0'
 
+  useEffect(()=>{
   if (typeof window !== "undefined") {
-  id = queryData.get('id')
+    id = readQuery().get('id')
   }
+  },[])
 
   const asyncRequest = async (
     requestFunction: Promise<any>,
