@@ -6,6 +6,7 @@ import Layout from "Components/templates/layout";
 import Pagination from "Components/templates/pagination";
 import { useRouter } from "next/router";
 import PokemonListView from "Components/organisms/pokemon-list-view";
+import { createQuery } from "Helpers/query-helper";
 
 const PokemonList = (props: any) => {
   const router = useRouter();
@@ -14,7 +15,13 @@ const PokemonList = (props: any) => {
   const refElement = useRef<null | HTMLDivElement>(null);
 
   const handleSelect = (id: number) => {
-    router.push(`/pokemon-list/${id}`);
+    const query = createQuery({
+      id,
+    });
+    router.push(`/detail/`, `/detail/` + query, {
+      shallow: true,
+    });
+    // router.push(`/pokemon-list/${id}`);
   };
   const asyncRequest = async (requestFunction: Promise<any>, setState: any) => {
     const response = await requestFunction;
