@@ -12,6 +12,7 @@ const PokemonList = (props: any) => {
   const router = useRouter();
   const pokemonList = props.pokemonLists;
   const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(20)
   const refElement = useRef<null | HTMLDivElement>(null);
 
   const handleSelect = (id: number) => {
@@ -30,7 +31,7 @@ const PokemonList = (props: any) => {
 
   useEffect(() => {
     asyncRequest(
-      Request.retrievePokemonLists(page),
+      Request.retrievePokemonLists(page, perPage),
       props.retrievePokemonLists
     );
 
@@ -39,7 +40,7 @@ const PokemonList = (props: any) => {
       block: "start",
       inline: "nearest",
     });
-  }, [props.retrievePokemonLists, page]);
+  }, [props.retrievePokemonLists, page, perPage]);
 
   return (
     <Layout title="Pokemon List">
@@ -52,7 +53,13 @@ const PokemonList = (props: any) => {
 
       <PokemonListView pokemonList={pokemonList} onSelect={handleSelect} />
 
-      <Pagination page={page} setPage={setPage} maxPage={pokemonList.maxPage} />
+      <Pagination 
+      page={page} 
+      setPage={setPage} 
+      perPage = {perPage}
+      setPerPage = {setPerPage}
+      maxPage={pokemonList.maxPage} />
+      
     </Layout>
   );
 };

@@ -14,15 +14,16 @@ import { IPokemonDetails, IPokemonLists } from "Redux/reducers/pokemon/reducer";
 const mainUrl = "https://pokeapi.co";
 export default class Request {
   public static async retrievePokemonLists(
-    page: number
+    page: number,
+    perPage:number = PER_PAGE
   ): Promise<IPokemonLists | undefined> {
     try {
-      const url = `${mainUrl}/api/v2/pokemon?limit=${PER_PAGE}&offset=${
-        PER_PAGE * (page - 1)
+      const url = `${mainUrl}/api/v2/pokemon?limit=${perPage}&offset=${
+        perPage * (page - 1)
       }`;
       const sessionData = getSessionStorageData();
       const response = await Axios.get(url);
-      const maxPage = Math.ceil(response.data.count / PER_PAGE);
+      const maxPage = Math.ceil(response.data.count / perPage);
 
       const pokemonData = response.data.results;
       const promises = pokemonData.map(async (data: any) => {
