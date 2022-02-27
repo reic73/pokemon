@@ -20,12 +20,6 @@ describe("Helper test", () => {
 
       expect(result).toBeDefined();
     });
-
-    it("PER_PAGE should be defined", () => {
-      const result = helper.PER_PAGE;
-
-      expect(result).toBeDefined();
-    });
   });
 
   describe("pokemonNumberHelper", () => {
@@ -300,6 +294,7 @@ describe("Helper test", () => {
       };
       const releasePokemon = { id: 1, name: "My Pokemon 1" };
       const page = 1;
+      const perPage = 20
       const expectedResult = {
         data: [
           {
@@ -313,7 +308,7 @@ describe("Helper test", () => {
         totalOwned: 1,
       };
 
-      const result = helper.releasePokemon(data, releasePokemon, page);
+      const result = helper.releasePokemon(data, releasePokemon, page, perPage);
 
       expect(result).toEqual(expectedResult);
     });

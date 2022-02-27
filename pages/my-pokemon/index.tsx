@@ -17,6 +17,7 @@ import MyPokemonView from "Components/organisms/my-pokemon-view";
 const MyPokemon = (props: any) => {
   const router = useRouter();
   const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(20);
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [pokemonData, setPokemonData] = useState<{
     data: any[];
@@ -39,7 +40,7 @@ const MyPokemon = (props: any) => {
 
   useEffect(() => {
     asyncRequest(
-      Request.retrievePokemonLists(page),
+      Request.retrievePokemonLists(page, perPage),
       props.retrievePokemonLists
     );
     refElement.current?.scrollIntoView({
@@ -48,14 +49,14 @@ const MyPokemon = (props: any) => {
       inline: "nearest",
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
+  }, [page, perPage]);
 
   const handleSelect = (id: number) => {
     router.push(`/pokemon-list/${id}`);
   };
 
   const handleRelease = (data: any) => {
-    const updatedPokemonData = releasePokemon(props.user, data, page);
+    const updatedPokemonData = releasePokemon(props.user, data, page, perPage);
 
     setPokemonData(updatedPokemonData);
     setOpenSnackBar(true);
@@ -64,7 +65,7 @@ const MyPokemon = (props: any) => {
   useEffect(() => {
     const sessionData = getSessionStorageData();
     props.setUser(sessionData);
-    const data = getPokemonDataFromStorage(sessionData, page);
+    const data = getPokemonDataFromStorage(sessionData, page, perPage);
     setPokemonData(data);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
@@ -94,7 +95,15 @@ const MyPokemon = (props: any) => {
         onRelease={handleRelease}
       />
 
-      <Pagination page={page} setPage={setPage} maxPage={pokemonData.maxPage} />
+      {pokemonData.data.length?(
+        <Pagination 
+          page={page} 
+          setPage={setPage} 
+          perPage = {perPage}
+          setPerPage = {setPerPage}
+          maxPage={pokemonData.maxPage} />
+      ):null}
+      
     </Layout>
   );
 };

@@ -172,7 +172,8 @@ export const setExistingPokemonToStorage = (
 export const releasePokemon = (
   userData: any,
   releasedPokemon: any,
-  page: number
+  page: number,
+  perPage:number
 ) => {
   const pokemonNames = userData[`${releasedPokemon.id}`]["names"];
   const updatedPokemonNames = pokemonNames.filter(
@@ -185,7 +186,7 @@ export const releasePokemon = (
 
   const sessionData = getSessionStorageData();
 
-  return getPokemonDataFromStorage(sessionData, page);
+  return getPokemonDataFromStorage(sessionData, page, perPage);
 };
 
 export const getUrl = (url: string): string => {
