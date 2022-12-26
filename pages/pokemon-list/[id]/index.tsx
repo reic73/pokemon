@@ -89,7 +89,7 @@ const PokemonList = (props: any) => {
         props.retrievePokemonDetails
       );
     }
-  }, [router]);
+  }, []);
 
   return (
     <Layout title={`Pokemon | ${pokemonData.name ? pokemonData.name : ""}`}>
